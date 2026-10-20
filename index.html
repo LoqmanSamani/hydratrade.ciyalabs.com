@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HydraTrade · Ciya Labs</title>
+    <meta name="description" content="HydraTrade is the systematic trading research line of Ciya Labs: machine learning on cryptocurrency and US equities, with every test registered first and the failures published.">
+    <link rel="canonical" href="https://hydratrade.ciyalabs.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="HydraTrade · Ciya Labs">
+    <meta property="og:description" content="Machine learning on markets, with the failures on record. 4 reports on cryptocurrency and US equities.">
+    <meta property="og:url" content="https://hydratrade.ciyalabs.com/">
+    <meta property="og:image" content="https://hydratrade.ciyalabs.com/assets/og.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="fonts/home.css">
+    <link rel="stylesheet" href="assets/styles.css">
+    <script>
+        /* apply a saved theme before first paint */
+        try {
+            var t = localStorage.getItem('ht-theme');
+            if (t === 'light' || t === 'dark') {
+                document.documentElement.setAttribute('data-theme', t);
+            }
+        } catch (e) {}
+    </script>
+</head>
+<body>
+    <a class="skip" href="#reports">Skip to the reports</a>
+    <header class="top">
+        <div class="wrap top-inner">
+            <a class="brand" href="./" aria-label="HydraTrade, home">
+                <svg class="mark" viewBox="0 0 106 80" aria-hidden="true"><path d="M33.4 45.14 L58 6 L102 76 L0 76 L26.4 34 L52.8 76" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="miter"/></svg>
+                <span class="brand-name">HydraTrade</span>
+            </a>
+            <nav class="top-nav" aria-label="Sections">
+                <a href="#reports">Reports</a>
+                <a href="#method">Method</a>
+                <a href="https://ciyalabs.com/" rel="noopener">Ciya Labs</a>
+                <button class="theme" id="theme" type="button" aria-label="Switch colour theme"><span aria-hidden="true"></span></button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero wrap" aria-labelledby="hero-title">
+            <p class="kicker">A research line of Ciya Labs &middot; systematic trading</p>
+            <h1 id="hero-title">HydraTrade</h1>
+            <p class="dek">Machine learning on markets, with the failures on record.</p>
+            <div class="hero-grid">
+                <p class="intro">HydraTrade studies systematic trading in cryptocurrency and US equities. Every
+                    test is written down before it runs, each universe is rebuilt as it was known at the time,
+                    and the changes that fail are published beside the ones that hold. The reports below form
+                    one series: each starts from what the one before it established.</p>
+                <dl class="facts">
+                    <div><dt>Markets</dt><dd>Cryptocurrency perpetuals, US equities</dd></div>
+                    <div><dt>Approach</dt><dd>Cross-sectional ranking, market neutral</dd></div>
+                    <div><dt>Status</dt><dd>The crypto book is in paper trading</dd></div>
+                </dl>
+            </div>
+            <figure class="hero-art">
+                <img src="i/header.jpg" alt="A many-headed creature drawn as a network of nodes, rising from a line of candlestick bars." width="1916" height="821">
+                <figcaption>From report I. Generated with OpenAI Image Generator.</figcaption>
+            </figure>
+        </section>
+
+        <section class="reports wrap" id="reports" aria-labelledby="reports-title">
+            <div class="section-head">
+                <h2 id="reports-title">Reports</h2>
+                <p>Read in order. Each report opens with its main result and ends with links to the next one.</p>
+            </div>
+            <ol class="report-list">
+                <li class="report">
+                    <a class="report-link" href="i/">
+                        <span class="report-art"><img src="assets/thumbs/i.jpg" alt="" width="900" height="386" loading="lazy"></span>
+                        <span class="report-body">
+                            <span class="report-meta"><b>HydraTrade I</b><span>Cryptocurrency</span><span>September 2026</span></span>
+                            <span class="report-title">Ranking Cryptocurrencies Instead of Predicting Them</span>
+                            <span class="report-dek">Why predicting the direction of the largest coins fails, and how a market-neutral ranking of a point-in-time universe survives four years of out-of-sample testing.</span>
+                            <span class="report-finding">Direction prediction stays at an AUC of 0.50 to 0.55. Ranking the universe instead returns a Sharpe ratio of 1.35 over 4.4 years of walk-forward history.</span>
+                            <span class="report-read">Read report I</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="report">
+                    <a class="report-link" href="ii/">
+                        <span class="report-art"><img src="assets/thumbs/ii.jpg" alt="" width="900" height="386" loading="lazy"></span>
+                        <span class="report-body">
+                            <span class="report-meta"><b>HydraTrade II</b><span>US equities</span><span>October 2026</span></span>
+                            <span class="report-title">The Universe Was the Result</span>
+                            <span class="report-dek">Locating a failed equity strategy by elimination: universe, breadth, holding period, leg construction and fundamentals, one at a time.</span>
+                            <span class="report-finding">A Sharpe ratio of 1.78 falls to 0.06 once index membership is taken as it was known on each decision date. The edge was survivorship.</span>
+                            <span class="report-read">Read report II</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="report">
+                    <a class="report-link" href="iii/">
+                        <span class="report-art"><img src="assets/thumbs/iii.jpg" alt="" width="900" height="386" loading="lazy"></span>
+                        <span class="report-body">
+                            <span class="report-meta"><b>HydraTrade III</b><span>Cryptocurrency</span><span>November 2026</span></span>
+                            <span class="report-title">Letting the Young Coins In</span>
+                            <span class="report-dek">Twenty-one registered attempts to raise the profit of a live book, measured against a corrected baseline, and the one that held.</span>
+                            <span class="report-finding">Admitting a coin after sixty days of history instead of a year raises the Sharpe ratio from 1.29 to 1.74. Twenty other changes fail.</span>
+                            <span class="report-read">Read report III</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="report">
+                    <a class="report-link" href="iv/">
+                        <span class="report-art"><img src="assets/thumbs/iv.jpg" alt="" width="900" height="386" loading="lazy"></span>
+                        <span class="report-body">
+                            <span class="report-meta"><b>HydraTrade IV</b><span>US equities and cryptocurrency</span><span>October 2026</span></span>
+                            <span class="report-title">Most of the Picture Was Already There</span>
+                            <span class="report-dek">Image-scaled price windows, the representation behind chart-reading networks, tested beside the rankers HydraTrade already runs.</span>
+                            <span class="report-finding">The image columns help a little in US stocks at a five-day hold and nowhere else. A network that sees only the chart ranks worse than the trees.</span>
+                            <span class="report-read">Read report IV</span>
+                        </span>
+                    </a>
+                </li>
+            </ol>
+        </section>
+
+        <section class="method wrap" id="method" aria-labelledby="method-title">
+            <div class="section-head">
+                <h2 id="method-title">Method</h2>
+                <p>Four rules every report follows, so a result can be checked rather than trusted.</p>
+            </div>
+            <ol class="rules">
+                <li><b>Registered first</b><span>Every change, its parameters and the test it must pass are fixed
+                    in writing before the first run. A rule that is loosened later is reported as such.</span></li>
+                <li><b>Point-in-time universes</b><span>Coins and companies enter and leave the universe on the
+                    dates they actually did, delisted names included. Report II shows what happens otherwise.</span></li>
+                <li><b>Walk-forward with an embargo</b><span>Models learn only from the past and are tested on the
+                    window that follows, with a gap between the two so that labels cannot leak.</span></li>
+                <li><b>Failures on record</b><span>A change that fails is written up in the same detail as one that
+                    holds. Most of what the series has tested failed, and that is part of the result.</span></li>
+            </ol>
+        </section>
+
+        <section class="next wrap" aria-labelledby="next-title">
+            <div class="next-inner">
+            <h2 id="next-title">Report V is in preparation</h2>
+            <p>New reports appear here first. To hear when one is published, write to us and we will add you to
+                the list.</p>
+            <a class="button" href="mailto:info@ciyalabs.com?subject=HydraTrade%20reports">Get new reports by email</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="foot">
+        <div class="wrap foot-inner">
+            <p class="foot-brand"><a href="https://ciyalabs.com/" rel="noopener">Ciya Labs</a> &middot; independent research lab</p>
+            <p class="foot-note">Research publications, not investment advice. Backtested and simulated results do
+                not predict future returns.</p>
+            <p class="foot-links">&copy; 2026 Ciya Labs &middot; <a href="https://ciyalabs.com/imprint.html" rel="noopener">Imprint</a>
+                &middot; <a href="https://ciyalabs.com/privacy.html" rel="noopener">Privacy</a></p>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            var btn = document.getElementById('theme');
+            var root = document.documentElement;
+            var mq = window.matchMedia('(prefers-color-scheme: dark)');
+
+            function current() {
+                var t = root.getAttribute('data-theme');
+                return t || (mq.matches ? 'dark' : 'light');
+            }
+
+            function label() {
+                btn.setAttribute('aria-label', current() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+            }
+
+            btn.addEventListener('click', function() {
+                var next = current() === 'dark' ? 'light' : 'dark';
+                root.setAttribute('data-theme', next);
+                try {
+                    localStorage.setItem('ht-theme', next);
+                } catch (e) {}
+                label();
+            });
+            label();
+        })();
+    </script>
+</body>
+</html>

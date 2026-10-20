@@ -1,0 +1,1746 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HydraTrade III. Letting the Young Coins In</title>
+<meta name="description" content="Twenty one pre-registered attempts to raise the profit of a live market-neutral crypto book. The yardstick is corrected first, one change survives, and leverage and risk limits are set together from the same bootstrap.">
+<link rel="stylesheet" href="../fonts/iii.css">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f3f1ea; --bg-2:#e9e6dc; --bg-3:#dedacd;
+  --ink:#1a1c21; --ink-2:#4c4f57; --ink-3:#83858b; --rule:#d4d0c3;
+  --amber:#b8690a; --amber-soft:#f1dfc4;
+  --indigo:#38457f; --indigo-soft:#dfe2ef;
+  --teal:#1f6b63; --rust:#a3412a;
+  --e100:#1f6b63; --e50:#38457f; --e25:#8a6d3b; --e0:#a3412a;
+  --display:"Fraunces",Georgia,serif;
+  --serif:"Source Serif 4","Iowan Old Style",Georgia,serif;
+  --sans:"Inter",ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#121317; --bg-2:#1b1d22; --bg-3:#25282e;
+    --ink:#e9e7e1; --ink-2:#b3b2ad; --ink-3:#7c7d80; --rule:#30333a;
+    --amber:#e6a24a; --amber-soft:#3a2a15;
+    --indigo:#9aa8e8; --indigo-soft:#232945;
+    --teal:#6cbcb1; --rust:#e0836b;
+    --e100:#6cbcb1; --e50:#9aa8e8; --e25:#d2b27a; --e0:#e0836b;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#121317; --bg-2:#1b1d22; --bg-3:#25282e;
+  --ink:#e9e7e1; --ink-2:#b3b2ad; --ink-3:#7c7d80; --rule:#30333a;
+  --amber:#e6a24a; --amber-soft:#3a2a15;
+  --indigo:#9aa8e8; --indigo-soft:#232945;
+  --teal:#6cbcb1; --rust:#e0836b;
+  --e100:#6cbcb1; --e50:#9aa8e8; --e25:#d2b27a; --e0:#e0836b;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0; background:var(--bg); color:var(--ink); font:400 18.5px/1.64 var(--serif)}
+.wrap{max-width:740px; margin:0 auto; padding:0 16px 120px}
+
+/* masthead */
+header.mast{padding:58px 0 22px}
+.kicker{font:600 11.5px/1 var(--sans); letter-spacing:.18em; text-transform:uppercase;
+  color:var(--amber); margin-bottom:22px; display:flex; align-items:center; gap:12px}
+.kicker::before{content:""; width:28px; height:1.5px; background:var(--amber)}
+h1{font:400 clamp(36px,6.4vw,62px)/1.02 var(--display); font-variation-settings:"opsz" 144;
+  margin:0 0 16px; letter-spacing:-.02em}
+h1 em{font-style:italic; color:var(--amber); font-weight:300}
+.sub{font:300 clamp(19px,2.5vw,23px)/1.38 var(--display); color:var(--ink-2); max-width:34ch;
+  margin:0 0 26px}
+.byline{font:400 13.5px/1.5 var(--sans); color:var(--ink-3); display:flex; flex-wrap:wrap;
+  gap:6px 26px; font-style:italic}
+
+/* hero, drawn from data */
+figure.hero{margin:10px -16px 44px; padding:0}
+figure.hero .frame{background:var(--bg-2); border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule); padding:10px 8px 2px}
+figure.hero figcaption{margin:10px 16px 0; border:0; padding:0; font-size:13px; color:var(--ink-3)}
+.hero-art .thread{stroke:var(--ink-3); stroke-width:.85; stroke-linecap:round; opacity:.5}
+.hero-art .thread-young{stroke:var(--amber); stroke-width:1.25; stroke-linecap:round; opacity:.95}
+.hero-art .thread-end{fill:var(--rust)}
+.hero-art .hero-year{stroke:var(--rule); stroke-width:1}
+.hero-art .hero-tick{font:500 13px var(--sans); fill:var(--ink-3)}
+@media (min-width:780px){ figure.hero{margin-left:-60px; margin-right:-60px} }
+
+/* standfirst */
+.stand{font:400 20.5px/1.58 var(--serif); margin:0 0 16px}
+.stand .big{font:400 23px/1.5 var(--display); letter-spacing:-.005em}
+
+/* the scorecard */
+.score{margin:42px 0 50px; display:grid; grid-template-columns:repeat(2,1fr); gap:1px;
+  background:var(--rule); border:1px solid var(--rule)}
+.score .cell{background:var(--bg); padding:16px 18px 18px}
+.score .q{font:600 12px/1.4 var(--sans); letter-spacing:.06em; text-transform:uppercase;
+  color:var(--ink-3); margin-bottom:8px}
+.score .a{font:400 16px/1.48 var(--serif); color:var(--ink)}
+.score .v{margin-top:10px}
+.chip{display:inline-block; font:600 10.5px/1 var(--sans); letter-spacing:.12em;
+  text-transform:uppercase; padding:5px 8px; border-radius:2px; white-space:nowrap}
+.chip.r{color:var(--rust); background:color-mix(in srgb,var(--rust) 13%,transparent)}
+.chip.s{color:var(--teal); background:color-mix(in srgb,var(--teal) 14%,transparent)}
+.chip.am{color:var(--amber); background:var(--amber-soft)}
+.chip.i{color:var(--indigo); background:var(--indigo-soft)}
+@media (max-width:620px){ .score{grid-template-columns:1fr} }
+
+/* parts */
+.part{margin:78px 0 0; position:relative}
+.part > .num{display:flex; align-items:baseline; gap:14px; margin-bottom:6px}
+.part > .num b{font:300 54px/1 var(--display); color:var(--amber); font-variation-settings:"opsz" 144}
+.part > .num span{font:600 11.5px/1 var(--sans); letter-spacing:.18em; text-transform:uppercase;
+  color:var(--ink-3)}
+h2{font:400 clamp(27px,3.6vw,36px)/1.14 var(--display); margin:0 0 22px; letter-spacing:-.012em;
+  padding-bottom:16px; border-bottom:1px solid var(--rule)}
+h3{font:600 16.5px/1.4 var(--sans); margin:36px 0 10px; letter-spacing:-.003em}
+p{margin:0 0 17px}
+.lede{font:400 20px/1.56 var(--serif); color:var(--ink-2)}
+sup{font:600 .64em/0 var(--sans)}
+
+/* arms, as compact entries */
+.arm-list{margin:28px 0; border-top:1px solid var(--rule)}
+.arm-e{display:grid; grid-template-columns:62px 1fr; gap:0 16px; padding:16px 0;
+  border-bottom:1px solid var(--rule)}
+.arm-e .id{font:500 22px/1.1 var(--display); color:var(--ink-3)}
+.arm-e h4{font:600 15.5px/1.4 var(--sans); margin:0 0 4px}
+.arm-e p{margin:0; font-size:16.5px; line-height:1.55; color:var(--ink-2)}
+.arm-e .res{display:block; margin-top:6px; font:500 13.5px/1.45 var(--sans); color:var(--ink)}
+.arm-e.pass .id{color:var(--amber)}
+
+/* decision card */
+.decision{margin:36px 0; padding:22px 24px; border:1.5px solid var(--amber);
+  border-radius:3px; background:color-mix(in srgb,var(--amber-soft) 55%,var(--bg))}
+.decision .h{font:600 11.5px/1 var(--sans); letter-spacing:.16em; text-transform:uppercase;
+  color:var(--amber); display:block; margin-bottom:12px}
+.decision p{margin:0 0 12px; font-size:17.5px} .decision p:last-child{margin:0}
+
+/* notes */
+.note-box{margin:32px 0; padding:18px 20px; background:var(--bg-2); border-left:3px solid var(--indigo);
+  font:400 16.5px/1.56 var(--serif)}
+.note-box .h{font:600 11.5px/1 var(--sans); letter-spacing:.14em; text-transform:uppercase;
+  color:var(--indigo); display:block; margin-bottom:10px}
+.note-box p{margin:0 0 12px} .note-box p:last-child{margin:0}
+.pull{margin:40px 0; font:300 italic 25px/1.36 var(--display); color:var(--ink); max-width:30ch;
+  padding-left:22px; border-left:2px solid var(--amber)}
+
+/* figures */
+figure{margin:38px 0}
+svg.fig{width:100%; height:auto; display:block; font-family:var(--sans)}
+figcaption{font:400 14px/1.55 var(--sans); color:var(--ink-2); margin-top:14px;
+  padding-left:14px; border-left:2px solid var(--rule)}
+figcaption b{color:var(--ink); font-weight:600}
+.fig .grid{stroke:var(--rule); stroke-width:1}
+.fig .axis{stroke:var(--ink-3); stroke-width:1.2}
+.fig .sep{stroke:var(--ink-3); stroke-width:1; stroke-dasharray:3 4; opacity:.7}
+.fig .connector{stroke:var(--ink-3); stroke-width:1; stroke-dasharray:2 3}
+.fig .tick{font-size:11.5px; fill:var(--ink-3)}
+.fig .axlab{font-size:12px; font-weight:600; fill:var(--ink-2)}
+.fig .lab{font-size:12.5px; fill:var(--ink-2)}
+.fig .grp{font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; fill:var(--ink-3)}
+.fig .note{font-size:12.5px; fill:var(--ink-3)}
+.fig .pt{font-size:13px; font-weight:600; fill:var(--ink)}
+.fig .pt-d{font-size:12px; font-weight:600; fill:var(--ink-2)}
+.fig .bar-level{fill:var(--indigo)}
+.fig .bar-v2{fill:var(--amber)}
+.fig .bar-up{fill:var(--teal); opacity:.75}
+.fig .bar-down{fill:var(--rust); opacity:.75}
+.fig .arm .ci{stroke:var(--ink-3); stroke-width:2; stroke-linecap:round}
+.fig .arm-v2 .ci{stroke:var(--amber); stroke-width:2.6; stroke-linecap:round}
+.fig .arm .pt-full{fill:var(--ink)} .fig .arm .pt-open{fill:var(--bg); stroke:var(--ink-2); stroke-width:1.6}
+.fig .arm-v2 .pt-full{fill:var(--amber)} .fig .arm-v2 .lab{fill:var(--amber); font-weight:600}
+.fig g.arm:hover .lab,.fig g.arm-v2:hover .lab{fill:var(--ink)}
+.fig .bar-raw{fill:var(--ink-3); opacity:.35}
+.fig .bar-adj{fill:var(--indigo)}
+.fig .bar-adj.young{fill:var(--amber)}
+.fig .age-raw{fill:var(--bg); stroke:var(--ink-2); stroke-width:1.6}
+.fig .age-adj{fill:var(--indigo)} .fig .age-adj.young{fill:var(--amber)}
+.fig .age-move{stroke:var(--ink-3); stroke-width:1.3}
+.fig .age-head{fill:var(--ink-3)}
+.fig .age-band{fill:var(--amber); opacity:.08}
+.fig .age-tag{font-size:11px; font-weight:600; letter-spacing:.06em; fill:var(--amber)}
+.fig .colhead{font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; fill:var(--ink-3)}
+.fig .val{font-size:12.5px; font-weight:600; fill:var(--ink)} .fig .val.young{fill:var(--amber)}
+.fig .lab-strong{font-size:12.5px; font-weight:600; fill:var(--ink)}
+.fig .gap{fill:var(--amber); opacity:.16}
+.fig .ser-base{fill:none; stroke:var(--indigo); stroke-width:2}
+.fig .ser-v2{fill:none; stroke:var(--amber); stroke-width:2.3}
+.fig .lab-v2{font-size:13px; font-weight:600; fill:var(--amber)}
+.fig .lab-base{font-size:13px; font-weight:600; fill:var(--indigo)}
+.fig .budget{fill:var(--rust); opacity:.07}
+.fig .budget-line{stroke:var(--rust); stroke-width:1.2; stroke-dasharray:5 4}
+.fig .chosen{stroke:var(--amber); stroke-width:1.4; stroke-dasharray:2 3}
+.fig .lev{fill:none; stroke-width:2}
+.fig .lev-pt{stroke:var(--bg); stroke-width:1.5}
+.fig .lev-pt.over{fill:var(--bg)!important; stroke-width:1.8}
+.fig .lev-lab{font-size:12.5px; font-weight:600}
+.fig .e100{stroke:var(--e100)} .fig .lev-pt.e100,.fig .lev-lab.e100{fill:var(--e100)} .fig .lev-pt.over.e100{stroke:var(--e100)}
+.fig .e50{stroke:var(--e50)} .fig .lev-pt.e50,.fig .lev-lab.e50{fill:var(--e50)} .fig .lev-pt.over.e50{stroke:var(--e50)}
+.fig .e25{stroke:var(--e25)} .fig .lev-pt.e25,.fig .lev-lab.e25{fill:var(--e25)} .fig .lev-pt.over.e25{stroke:var(--e25)}
+.fig .e0{stroke:var(--e0)} .fig .lev-pt.e0,.fig .lev-lab.e0{fill:var(--e0)} .fig .lev-pt.over.e0{stroke:var(--e0)}
+.fig .lev-lab{stroke:none}
+
+/* tables */
+table.data{width:100%; border-collapse:collapse; font:400 14.5px/1.45 var(--sans); margin:26px 0}
+table.data caption{text-align:left; font:400 14px/1.55 var(--sans); color:var(--ink-2); padding-bottom:12px}
+table.data th{text-align:left; font-weight:600; padding:9px 12px 9px 0; border-bottom:1.5px solid var(--ink-3);
+  font-size:12.5px; letter-spacing:.02em}
+table.data td{padding:9px 12px 9px 0; border-bottom:1px solid var(--rule)}
+table.data td.n,table.data th.n{text-align:right; font-variant-numeric:tabular-nums}
+table.data tr.hl td{background:color-mix(in srgb,var(--amber-soft) 60%,transparent); font-weight:600}
+.tscroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+
+/* register and references */
+ol.reg{list-style:none; padding:0; margin:26px 0}
+ol.reg li{display:grid; grid-template-columns:52px 1fr; gap:0 14px; padding:14px 0; border-bottom:1px solid var(--rule)}
+ol.reg .k{font:600 13px/1.6 var(--sans); color:var(--ink-3)}
+ol.reg .t{font:600 14.5px/1.45 var(--sans); margin-bottom:3px}
+ol.reg .d{font:400 15.5px/1.5 var(--serif); color:var(--ink-2)}
+ol.reg li.pass .k{color:var(--amber)}
+ol.refs{font:400 15px/1.56 var(--serif); color:var(--ink-2); padding-left:28px}
+ol.refs li{margin-bottom:10px}
+ol.refs i{color:var(--ink)}
+
+/* citation pop-ups: pointing at, focusing or tapping a superscript shows its reference */
+.cite{color:var(--amber); cursor:pointer; border-radius:2px}
+.cite:hover,.cite:focus-visible{text-decoration:underline; text-underline-offset:2px; outline:none}
+.cite-tip{position:fixed; z-index:20; max-width:min(440px,calc(100vw - 32px));
+  background:var(--bg-2); color:var(--ink); border:1px solid var(--rule); border-radius:4px;
+  padding:10px 14px; font:400 14px/1.45 var(--sans); box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.cite-tip p{margin:0} .cite-tip p+p{margin-top:8px}
+
+/* theme bar */
+.bar{position:fixed; left:0; right:0; bottom:0; background:var(--bg-2); border-top:1px solid var(--rule);
+  padding:9px 16px; display:flex; gap:14px; align-items:center; justify-content:center;
+  font:400 13px/1 var(--sans); color:var(--ink-3); z-index:9}
+.bar button{font:600 12px/1 var(--sans); letter-spacing:.06em; color:var(--ink-2); background:var(--bg);
+  border:1px solid var(--rule); border-radius:2px; padding:8px 13px; cursor:pointer}
+.bar button:hover{color:var(--amber); border-color:var(--amber)}
+@media (max-width:620px){
+  body{font-size:17px} .stand{font-size:18.5px} .stand .big{font-size:20.5px}
+  .part > .num b{font-size:42px}
+  .arm-e{grid-template-columns:44px 1fr} .arm-e .id{font-size:18px}
+  table.data{font-size:13px}
+  .bar span{display:none}
+  figure:not(.hero){overflow-x:auto; -webkit-overflow-scrolling:touch}
+  figure:not(.hero) svg.fig{min-width:600px}
+  figure:not(.hero) figcaption{position:sticky; left:0; max-width:calc(100vw - 32px)}
+}
+</style>
+<link rel="canonical" href="https://hydratrade.ciyalabs.com/iii/">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<style id="ht-series-style">
+.ht-bar{font-style:normal;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  max-width:1100px;margin:0 auto;padding:12px 20px;font:500 12px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;
+  letter-spacing:.08em;text-transform:uppercase}
+.ht-bar a{color:inherit;text-decoration:none;opacity:.72}
+.ht-bar a:hover{opacity:1}
+.ht-bar b{font-weight:600;opacity:1}
+.ht-series{font-style:normal;max-width:760px;margin:72px auto 120px;padding:0 20px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.ht-series h2{font-family:inherit;font-size:12px;font-weight:600;line-height:1.4;letter-spacing:.12em;text-transform:uppercase;opacity:.65;margin:0 0 14px}
+.ht-series .ht-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ht-series a.ht-card{display:block;padding:16px 18px;color:inherit;text-decoration:none;
+  border:1px solid color-mix(in srgb,currentColor 22%,transparent);border-radius:4px;transition:border-color .2s}
+.ht-series a.ht-card:hover{border-color:currentColor}
+.ht-series .ht-dir{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.65;margin-bottom:6px}
+.ht-series .ht-t{display:block;font-size:16px;line-height:1.35;font-weight:600}
+.ht-series .ht-next{text-align:right;grid-column:2}
+.ht-series .ht-all{display:inline-block;margin-top:18px;color:inherit;font-size:14px;opacity:.75}
+.ht-series .ht-all:hover{opacity:1}
+.ht-series .ht-note{margin-top:22px;font-size:12px;line-height:1.6;opacity:.6}
+@media (max-width:620px){.ht-series .ht-nav{grid-template-columns:1fr}.ht-series .ht-next{grid-column:1;text-align:left}}
+</style>
+</head>
+<body>
+<nav class="ht-bar" aria-label="HydraTrade series"><a href="../"><b>HydraTrade</b> &middot; Ciya Labs</a><a href="../#reports">All reports</a></nav>
+<div class="wrap">
+
+<header class="mast">
+  <div class="kicker">Report three · cryptocurrency · breadth, costs and leverage</div>
+  <h1>HydraTrade III: Letting the <em>Young Coins</em> In</h1>
+  <p class="sub">Twenty one registered attempts to raise the profit of a live book, and the one that held</p>
+  <div class="byline"><span>Loghman Samani</span><span>Ciya Labs</span><span>November 2026</span></div>
+</header>
+
+<figure class="hero">
+<div class="frame">
+<!--hero-->
+<svg viewBox="0 0 1200 470" class="fig hero-art" role="img" aria-label="304 threads, one per perpetual contract the venue has listed since March 2022, running from its first to its last traded day. On each thread the stretch between sixty days and one year of price history is highlighted.">
+<line class="hero-year" x1="228.2" x2="228.2" y1="8" y2="438"/><text class="hero-tick" x="228.2" y="458" text-anchor="middle">2023</text>
+<line class="hero-year" x1="476.5" x2="476.5" y1="8" y2="438"/><text class="hero-tick" x="476.5" y="458" text-anchor="middle">2024</text>
+<line class="hero-year" x1="725.5" x2="725.5" y1="8" y2="438"/><text class="hero-tick" x="725.5" y="458" text-anchor="middle">2025</text>
+<line class="hero-year" x1="973.9" x2="973.9" y1="8" y2="438"/><text class="hero-tick" x="973.9" y="458" text-anchor="middle">2026</text>
+<line class="thread" x1="35.0" x2="69.0" y1="14.0" y2="14.0"/>
+<circle class="thread-end" cx="69.0" cy="14.0" r="1.6"/>
+<line class="thread" x1="35.0" x2="641.2" y1="15.4" y2="15.4"/>
+<circle class="thread-end" cx="641.2" cy="15.4" r="1.6"/>
+<line class="thread" x1="35.0" x2="826.9" y1="16.8" y2="16.8"/>
+<circle class="thread-end" cx="826.9" cy="16.8" r="1.6"/>
+<line class="thread" x1="35.0" x2="1164.4" y1="18.1" y2="18.1"/>
+<line class="thread" x1="35.0" x2="1164.4" y1="19.5" y2="19.5"/>
+<line class="thread" x1="35.0" x2="1164.4" y1="20.9" y2="20.9"/>
+<line class="thread" x1="35.0" x2="1164.4" y1="22.3" y2="22.3"/>
+<line class="thread" x1="35.0" x2="1164.4" y1="23.7" y2="23.7"/>
+<line class="thread" x1="35.0" x2="1164.4" y1="25.0" y2="25.0"/>
+<line class="thread" x1="35.0" x2="1164.4" y1="26.4" y2="26.4"/>
+<line class="thread" x1="35.0" x2="1164.4" y1="27.8" y2="27.8"/>
+<line class="thread" x1="35.0" x2="1164.4" y1="29.2" y2="29.2"/>
+<line class="thread" x1="35.0" x2="1164.4" y1="30.6" y2="30.6"/>
+<line class="thread" x1="35.0" x2="1164.4" y1="31.9" y2="31.9"/>
+<line class="thread" x1="35.0" x2="1164.4" y1="33.3" y2="33.3"/>
+<line class="thread" x1="35.0" x2="1164.4" y1="34.7" y2="34.7"/>
+<line class="thread" x1="35.0" x2="1164.4" y1="36.1" y2="36.1"/>
+<line class="thread" x1="81.2" x2="1159.6" y1="37.5" y2="37.5"/>
+<line class="thread-young" x1="81.2" x2="274.1" y1="37.5" y2="37.5"/>
+<circle class="thread-end" cx="1159.6" cy="37.5" r="1.6"/>
+<line class="thread" x1="84.0" x2="1164.4" y1="38.8" y2="38.8"/>
+<line class="thread-young" x1="123.6" x2="331.1" y1="38.8" y2="38.8"/>
+<line class="thread" x1="90.8" x2="633.7" y1="40.2" y2="40.2"/>
+<circle class="thread-end" cx="633.7" cy="40.2" r="1.6"/>
+<line class="thread" x1="90.8" x2="1164.4" y1="41.6" y2="41.6"/>
+<line class="thread-young" x1="90.8" x2="279.6" y1="41.6" y2="41.6"/>
+<line class="thread" x1="90.8" x2="1164.4" y1="43.0" y2="43.0"/>
+<line class="thread" x1="95.5" x2="731.6" y1="44.3" y2="44.3"/>
+<circle class="thread-end" cx="731.6" cy="44.3" r="1.6"/>
+<line class="thread" x1="95.5" x2="1164.4" y1="45.7" y2="45.7"/>
+<line class="thread" x1="95.5" x2="1164.4" y1="47.1" y2="47.1"/>
+<line class="thread" x1="100.3" x2="1164.4" y1="48.5" y2="48.5"/>
+<line class="thread" x1="100.3" x2="1164.4" y1="49.9" y2="49.9"/>
+<line class="thread" x1="100.3" x2="1164.4" y1="51.2" y2="51.2"/>
+<line class="thread" x1="106.4" x2="1164.4" y1="52.6" y2="52.6"/>
+<line class="thread" x1="106.4" x2="1164.4" y1="54.0" y2="54.0"/>
+<line class="thread" x1="106.4" x2="1164.4" y1="55.4" y2="55.4"/>
+<line class="thread" x1="106.4" x2="1164.4" y1="56.8" y2="56.8"/>
+<line class="thread" x1="111.2" x2="755.5" y1="58.1" y2="58.1"/>
+<circle class="thread-end" cx="755.5" cy="58.1" r="1.6"/>
+<line class="thread" x1="111.2" x2="1159.6" y1="59.5" y2="59.5"/>
+<circle class="thread-end" cx="1159.6" cy="59.5" r="1.6"/>
+<line class="thread" x1="111.2" x2="1164.4" y1="60.9" y2="60.9"/>
+<line class="thread" x1="111.2" x2="1164.4" y1="62.3" y2="62.3"/>
+<line class="thread" x1="111.2" x2="1164.4" y1="63.7" y2="63.7"/>
+<line class="thread" x1="115.9" x2="893.6" y1="65.0" y2="65.0"/>
+<circle class="thread-end" cx="893.6" cy="65.0" r="1.6"/>
+<line class="thread" x1="115.9" x2="1164.4" y1="66.4" y2="66.4"/>
+<line class="thread" x1="115.9" x2="1164.4" y1="67.8" y2="67.8"/>
+<line class="thread" x1="115.9" x2="1164.4" y1="69.2" y2="69.2"/>
+<line class="thread" x1="125.5" x2="1164.4" y1="70.6" y2="70.6"/>
+<line class="thread" x1="125.5" x2="1164.4" y1="71.9" y2="71.9"/>
+<line class="thread" x1="125.5" x2="1164.4" y1="73.3" y2="73.3"/>
+<line class="thread-young" x1="125.5" x2="153.5" y1="73.3" y2="73.3"/>
+<line class="thread" x1="130.2" x2="1133.7" y1="74.7" y2="74.7"/>
+<circle class="thread-end" cx="1133.7" cy="74.7" r="1.6"/>
+<line class="thread" x1="130.2" x2="1164.4" y1="76.1" y2="76.1"/>
+<line class="thread" x1="135.0" x2="1159.6" y1="77.5" y2="77.5"/>
+<circle class="thread-end" cx="1159.6" cy="77.5" r="1.6"/>
+<line class="thread" x1="135.0" x2="1164.4" y1="78.8" y2="78.8"/>
+<line class="thread" x1="135.0" x2="1164.4" y1="80.2" y2="80.2"/>
+<line class="thread" x1="139.7" x2="1164.4" y1="81.6" y2="81.6"/>
+<line class="thread" x1="139.7" x2="1164.4" y1="83.0" y2="83.0"/>
+<line class="thread" x1="139.7" x2="1164.4" y1="84.4" y2="84.4"/>
+<line class="thread" x1="139.7" x2="1164.4" y1="85.7" y2="85.7"/>
+<line class="thread" x1="144.5" x2="914.7" y1="87.1" y2="87.1"/>
+<circle class="thread-end" cx="914.7" cy="87.1" r="1.6"/>
+<line class="thread" x1="144.5" x2="1158.9" y1="88.5" y2="88.5"/>
+<circle class="thread-end" cx="1158.9" cy="88.5" r="1.6"/>
+<line class="thread" x1="144.5" x2="1164.4" y1="89.9" y2="89.9"/>
+<line class="thread" x1="149.3" x2="1136.5" y1="91.3" y2="91.3"/>
+<circle class="thread-end" cx="1136.5" cy="91.3" r="1.6"/>
+<line class="thread" x1="149.3" x2="1164.4" y1="92.6" y2="92.6"/>
+<line class="thread-young" x1="149.3" x2="150.7" y1="92.6" y2="92.6"/>
+<line class="thread" x1="149.3" x2="1164.4" y1="94.0" y2="94.0"/>
+<line class="thread" x1="149.3" x2="1164.4" y1="95.4" y2="95.4"/>
+<line class="thread" x1="154.0" x2="893.6" y1="96.8" y2="96.8"/>
+<circle class="thread-end" cx="893.6" cy="96.8" r="1.6"/>
+<line class="thread" x1="154.7" x2="196.2" y1="98.2" y2="98.2"/>
+<circle class="thread-end" cx="196.2" cy="98.2" r="1.6"/>
+<line class="thread" x1="154.7" x2="1159.6" y1="99.5" y2="99.5"/>
+<circle class="thread-end" cx="1159.6" cy="99.5" r="1.6"/>
+<line class="thread" x1="154.7" x2="1164.4" y1="100.9" y2="100.9"/>
+<line class="thread" x1="158.8" x2="584.0" y1="102.3" y2="102.3"/>
+<circle class="thread-end" cx="584.0" cy="102.3" r="1.6"/>
+<line class="thread" x1="158.8" x2="893.6" y1="103.7" y2="103.7"/>
+<circle class="thread-end" cx="893.6" cy="103.7" r="1.6"/>
+<line class="thread" x1="158.8" x2="1159.6" y1="105.0" y2="105.0"/>
+<circle class="thread-end" cx="1159.6" cy="105.0" r="1.6"/>
+<line class="thread" x1="158.8" x2="1164.4" y1="106.4" y2="106.4"/>
+<line class="thread" x1="163.6" x2="926.2" y1="107.8" y2="107.8"/>
+<circle class="thread-end" cx="926.2" cy="107.8" r="1.6"/>
+<line class="thread" x1="163.6" x2="1150.7" y1="109.2" y2="109.2"/>
+<circle class="thread-end" cx="1150.7" cy="109.2" r="1.6"/>
+<line class="thread" x1="163.6" x2="1164.4" y1="110.6" y2="110.6"/>
+<line class="thread-young" x1="163.6" x2="193.0" y1="110.6" y2="110.6"/>
+<line class="thread" x1="164.2" x2="624.2" y1="111.9" y2="111.9"/>
+<circle class="thread-end" cx="624.2" cy="111.9" r="1.6"/>
+<line class="thread" x1="168.3" x2="893.6" y1="113.3" y2="113.3"/>
+<line class="thread-young" x1="168.3" x2="235.4" y1="113.3" y2="113.3"/>
+<circle class="thread-end" cx="893.6" cy="113.3" r="1.6"/>
+<line class="thread" x1="169.0" x2="893.6" y1="114.7" y2="114.7"/>
+<circle class="thread-end" cx="893.6" cy="114.7" r="1.6"/>
+<line class="thread" x1="169.0" x2="1159.6" y1="116.1" y2="116.1"/>
+<circle class="thread-end" cx="1159.6" cy="116.1" r="1.6"/>
+<line class="thread" x1="173.1" x2="1164.4" y1="117.5" y2="117.5"/>
+<line class="thread" x1="173.8" x2="1159.6" y1="118.8" y2="118.8"/>
+<circle class="thread-end" cx="1159.6" cy="118.8" r="1.6"/>
+<line class="thread" x1="173.8" x2="1164.4" y1="120.2" y2="120.2"/>
+<line class="thread-young" x1="173.8" x2="234.6" y1="120.2" y2="120.2"/>
+<line class="thread" x1="177.8" x2="1164.4" y1="121.6" y2="121.6"/>
+<line class="thread-young" x1="218.7" x2="426.2" y1="121.6" y2="121.6"/>
+<line class="thread" x1="259.5" x2="1159.6" y1="123.0" y2="123.0"/>
+<line class="thread-young" x1="491.7" x2="699.2" y1="123.0" y2="123.0"/>
+<circle class="thread-end" cx="1159.6" cy="123.0" r="1.6"/>
+<line class="thread" x1="273.1" x2="926.9" y1="124.4" y2="124.4"/>
+<circle class="thread-end" cx="926.9" cy="124.4" r="1.6"/>
+<line class="thread" x1="273.1" x2="1159.6" y1="125.7" y2="125.7"/>
+<line class="thread-young" x1="273.1" x2="416.9" y1="125.7" y2="125.7"/>
+<circle class="thread-end" cx="1159.6" cy="125.7" r="1.6"/>
+<line class="thread" x1="273.1" x2="1164.4" y1="127.1" y2="127.1"/>
+<line class="thread-young" x1="273.1" x2="315.6" y1="127.1" y2="127.1"/>
+<line class="thread" x1="275.1" x2="1164.4" y1="128.5" y2="128.5"/>
+<line class="thread" x1="283.3" x2="1164.4" y1="129.9" y2="129.9"/>
+<line class="thread-young" x1="324.5" x2="532.0" y1="129.9" y2="129.9"/>
+<line class="thread" x1="283.3" x2="1164.4" y1="131.3" y2="131.3"/>
+<line class="thread" x1="288.1" x2="617.3" y1="132.6" y2="132.6"/>
+<circle class="thread-end" cx="617.3" cy="132.6" r="1.6"/>
+<line class="thread" x1="288.1" x2="1164.4" y1="134.0" y2="134.0"/>
+<line class="thread" x1="288.1" x2="1164.4" y1="135.4" y2="135.4"/>
+<line class="thread" x1="292.1" x2="1111.3" y1="136.8" y2="136.8"/>
+<circle class="thread-end" cx="1111.3" cy="136.8" r="1.6"/>
+<line class="thread" x1="292.1" x2="1164.4" y1="138.2" y2="138.2"/>
+<line class="thread" x1="292.1" x2="1164.4" y1="139.5" y2="139.5"/>
+<line class="thread" x1="296.9" x2="614.6" y1="140.9" y2="140.9"/>
+<line class="thread-young" x1="296.9" x2="312.9" y1="140.9" y2="140.9"/>
+<circle class="thread-end" cx="614.6" cy="140.9" r="1.6"/>
+<line class="thread" x1="296.9" x2="1159.6" y1="142.3" y2="142.3"/>
+<circle class="thread-end" cx="1159.6" cy="142.3" r="1.6"/>
+<line class="thread" x1="296.9" x2="1159.6" y1="143.7" y2="143.7"/>
+<circle class="thread-end" cx="1159.6" cy="143.7" r="1.6"/>
+<line class="thread" x1="311.2" x2="1164.4" y1="145.1" y2="145.1"/>
+<line class="thread-young" x1="352.4" x2="559.9" y1="145.1" y2="145.1"/>
+<line class="thread" x1="326.2" x2="1164.4" y1="146.4" y2="146.4"/>
+<line class="thread-young" x1="353.9" x2="561.4" y1="146.4" y2="146.4"/>
+<line class="thread" x1="330.2" x2="1164.4" y1="147.8" y2="147.8"/>
+<line class="thread" x1="349.3" x2="731.0" y1="149.2" y2="149.2"/>
+<circle class="thread-end" cx="731.0" cy="149.2" r="1.6"/>
+<line class="thread" x1="364.3" x2="926.9" y1="150.6" y2="150.6"/>
+<circle class="thread-end" cx="926.9" cy="150.6" r="1.6"/>
+<line class="thread" x1="364.3" x2="926.9" y1="152.0" y2="152.0"/>
+<circle class="thread-end" cx="926.9" cy="152.0" r="1.6"/>
+<line class="thread" x1="364.3" x2="1039.8" y1="153.3" y2="153.3"/>
+<circle class="thread-end" cx="1039.8" cy="153.3" r="1.6"/>
+<line class="thread" x1="368.3" x2="926.9" y1="154.7" y2="154.7"/>
+<circle class="thread-end" cx="926.9" cy="154.7" r="1.6"/>
+<line class="thread" x1="368.3" x2="1159.6" y1="156.1" y2="156.1"/>
+<line class="thread-young" x1="368.3" x2="439.5" y1="156.1" y2="156.1"/>
+<circle class="thread-end" cx="1159.6" cy="156.1" r="1.6"/>
+<line class="thread" x1="368.3" x2="1159.6" y1="157.5" y2="157.5"/>
+<line class="thread-young" x1="368.3" x2="384.9" y1="157.5" y2="157.5"/>
+<circle class="thread-end" cx="1159.6" cy="157.5" r="1.6"/>
+<line class="thread" x1="373.1" x2="1164.4" y1="158.9" y2="158.9"/>
+<line class="thread-young" x1="408.1" x2="615.6" y1="158.9" y2="158.9"/>
+<line class="thread" x1="379.2" x2="783.4" y1="160.2" y2="160.2"/>
+<circle class="thread-end" cx="783.4" cy="160.2" r="1.6"/>
+<line class="thread" x1="379.2" x2="1163.7" y1="161.6" y2="161.6"/>
+<line class="thread" x1="382.6" x2="1164.4" y1="163.0" y2="163.0"/>
+<line class="thread" x1="391.5" x2="1164.4" y1="164.4" y2="164.4"/>
+<line class="thread" x1="392.2" x2="986.8" y1="165.7" y2="165.7"/>
+<circle class="thread-end" cx="986.8" cy="165.7" r="1.6"/>
+<line class="thread" x1="449.3" x2="1164.4" y1="167.1" y2="167.1"/>
+<line class="thread" x1="454.1" x2="1164.4" y1="168.5" y2="168.5"/>
+<line class="thread-young" x1="539.4" x2="747.0" y1="168.5" y2="168.5"/>
+<line class="thread" x1="454.1" x2="1164.4" y1="169.9" y2="169.9"/>
+<line class="thread-young" x1="475.6" x2="683.1" y1="169.9" y2="169.9"/>
+<line class="thread" x1="469.0" x2="1164.4" y1="171.3" y2="171.3"/>
+<line class="thread-young" x1="506.0" x2="713.5" y1="171.3" y2="171.3"/>
+<line class="thread" x1="469.0" x2="1164.4" y1="172.6" y2="172.6"/>
+<line class="thread-young" x1="500.8" x2="708.3" y1="172.6" y2="172.6"/>
+<line class="thread" x1="490.8" x2="1164.4" y1="174.0" y2="174.0"/>
+<line class="thread-young" x1="561.3" x2="768.8" y1="174.0" y2="174.0"/>
+<line class="thread" x1="492.2" x2="1164.4" y1="175.4" y2="175.4"/>
+<line class="thread-young" x1="492.2" x2="687.8" y1="175.4" y2="175.4"/>
+<line class="thread" x1="493.5" x2="1159.6" y1="176.8" y2="176.8"/>
+<circle class="thread-end" cx="1159.6" cy="176.8" r="1.6"/>
+<line class="thread" x1="496.9" x2="1159.6" y1="178.2" y2="178.2"/>
+<circle class="thread-end" cx="1159.6" cy="178.2" r="1.6"/>
+<line class="thread" x1="496.9" x2="1159.6" y1="179.5" y2="179.5"/>
+<circle class="thread-end" cx="1159.6" cy="179.5" r="1.6"/>
+<line class="thread" x1="497.6" x2="1164.4" y1="180.9" y2="180.9"/>
+<line class="thread-young" x1="538.2" x2="745.7" y1="180.9" y2="180.9"/>
+<line class="thread" x1="502.4" x2="1159.6" y1="182.3" y2="182.3"/>
+<line class="thread-young" x1="542.3" x2="749.8" y1="182.3" y2="182.3"/>
+<circle class="thread-end" cx="1159.6" cy="182.3" r="1.6"/>
+<line class="thread" x1="511.2" x2="1164.4" y1="183.7" y2="183.7"/>
+<line class="thread-young" x1="551.7" x2="759.2" y1="183.7" y2="183.7"/>
+<line class="thread" x1="515.3" x2="1159.6" y1="185.1" y2="185.1"/>
+<circle class="thread-end" cx="1159.6" cy="185.1" r="1.6"/>
+<line class="thread" x1="525.5" x2="1164.4" y1="186.4" y2="186.4"/>
+<line class="thread-young" x1="525.5" x2="630.6" y1="186.4" y2="186.4"/>
+<line class="thread" x1="526.9" x2="765.0" y1="187.8" y2="187.8"/>
+<circle class="thread-end" cx="765.0" cy="187.8" r="1.6"/>
+<line class="thread" x1="535.0" x2="926.9" y1="189.2" y2="189.2"/>
+<circle class="thread-end" cx="926.9" cy="189.2" r="1.6"/>
+<line class="thread" x1="543.2" x2="1164.4" y1="190.6" y2="190.6"/>
+<line class="thread-young" x1="581.0" x2="788.5" y1="190.6" y2="190.6"/>
+<line class="thread" x1="544.6" x2="755.5" y1="192.0" y2="192.0"/>
+<circle class="thread-end" cx="755.5" cy="192.0" r="1.6"/>
+<line class="thread" x1="544.6" x2="1159.6" y1="193.3" y2="193.3"/>
+<circle class="thread-end" cx="1159.6" cy="193.3" r="1.6"/>
+<line class="thread" x1="545.2" x2="1164.4" y1="194.7" y2="194.7"/>
+<line class="thread-young" x1="834.8" x2="1042.3" y1="194.7" y2="194.7"/>
+<line class="thread" x1="547.3" x2="1164.4" y1="196.1" y2="196.1"/>
+<line class="thread-young" x1="584.9" x2="792.4" y1="196.1" y2="196.1"/>
+<line class="thread" x1="550.0" x2="1111.3" y1="197.5" y2="197.5"/>
+<circle class="thread-end" cx="1111.3" cy="197.5" r="1.6"/>
+<line class="thread" x1="550.0" x2="1111.3" y1="198.9" y2="198.9"/>
+<circle class="thread-end" cx="1111.3" cy="198.9" r="1.6"/>
+<line class="thread" x1="554.1" x2="1159.6" y1="200.2" y2="200.2"/>
+<circle class="thread-end" cx="1159.6" cy="200.2" r="1.6"/>
+<line class="thread" x1="554.1" x2="1164.4" y1="201.6" y2="201.6"/>
+<line class="thread-young" x1="568.7" x2="776.2" y1="201.6" y2="201.6"/>
+<line class="thread" x1="554.1" x2="1164.4" y1="203.0" y2="203.0"/>
+<line class="thread-young" x1="580.2" x2="787.7" y1="203.0" y2="203.0"/>
+<line class="thread" x1="554.8" x2="731.6" y1="204.4" y2="204.4"/>
+<circle class="thread-end" cx="731.6" cy="204.4" r="1.6"/>
+<line class="thread" x1="554.8" x2="1164.4" y1="205.8" y2="205.8"/>
+<line class="thread" x1="558.2" x2="1143.3" y1="207.1" y2="207.1"/>
+<circle class="thread-end" cx="1143.3" cy="207.1" r="1.6"/>
+<line class="thread" x1="558.8" x2="1164.4" y1="208.5" y2="208.5"/>
+<line class="thread" x1="559.5" x2="1159.6" y1="209.9" y2="209.9"/>
+<circle class="thread-end" cx="1159.6" cy="209.9" r="1.6"/>
+<line class="thread" x1="563.6" x2="1159.6" y1="211.3" y2="211.3"/>
+<circle class="thread-end" cx="1159.6" cy="211.3" r="1.6"/>
+<line class="thread" x1="564.3" x2="1110.6" y1="212.7" y2="212.7"/>
+<circle class="thread-end" cx="1110.6" cy="212.7" r="1.6"/>
+<line class="thread" x1="565.0" x2="1159.6" y1="214.0" y2="214.0"/>
+<circle class="thread-end" cx="1159.6" cy="214.0" r="1.6"/>
+<line class="thread" x1="565.0" x2="1164.4" y1="215.4" y2="215.4"/>
+<line class="thread-young" x1="570.1" x2="777.6" y1="215.4" y2="215.4"/>
+<line class="thread" x1="568.4" x2="1159.6" y1="216.8" y2="216.8"/>
+<line class="thread-young" x1="568.4" x2="611.6" y1="216.8" y2="216.8"/>
+<circle class="thread-end" cx="1159.6" cy="216.8" r="1.6"/>
+<line class="thread" x1="568.4" x2="1159.6" y1="218.2" y2="218.2"/>
+<circle class="thread-end" cx="1159.6" cy="218.2" r="1.6"/>
+<line class="thread" x1="568.4" x2="1164.4" y1="219.6" y2="219.6"/>
+<line class="thread" x1="568.4" x2="1164.4" y1="220.9" y2="220.9"/>
+<line class="thread" x1="573.8" x2="1050.7" y1="222.3" y2="222.3"/>
+<circle class="thread-end" cx="1050.7" cy="222.3" r="1.6"/>
+<line class="thread" x1="573.8" x2="1159.6" y1="223.7" y2="223.7"/>
+<line class="thread-young" x1="573.8" x2="774.1" y1="223.7" y2="223.7"/>
+<circle class="thread-end" cx="1159.6" cy="223.7" r="1.6"/>
+<line class="thread" x1="573.8" x2="1164.4" y1="225.1" y2="225.1"/>
+<line class="thread" x1="577.9" x2="1159.6" y1="226.4" y2="226.4"/>
+<line class="thread-young" x1="577.9" x2="741.5" y1="226.4" y2="226.4"/>
+<circle class="thread-end" cx="1159.6" cy="226.4" r="1.6"/>
+<line class="thread" x1="577.9" x2="1164.4" y1="227.8" y2="227.8"/>
+<line class="thread" x1="577.9" x2="1164.4" y1="229.2" y2="229.2"/>
+<line class="thread-young" x1="577.9" x2="601.3" y1="229.2" y2="229.2"/>
+<line class="thread" x1="582.7" x2="1159.6" y1="230.6" y2="230.6"/>
+<line class="thread-young" x1="584.4" x2="791.9" y1="230.6" y2="230.6"/>
+<circle class="thread-end" cx="1159.6" cy="230.6" r="1.6"/>
+<line class="thread" x1="582.7" x2="1164.4" y1="232.0" y2="232.0"/>
+<line class="thread" x1="582.7" x2="1164.4" y1="233.3" y2="233.3"/>
+<line class="thread-young" x1="693.8" x2="901.3" y1="233.3" y2="233.3"/>
+<line class="thread" x1="586.1" x2="1164.4" y1="234.7" y2="234.7"/>
+<line class="thread-young" x1="586.1" x2="758.5" y1="234.7" y2="234.7"/>
+<line class="thread" x1="586.7" x2="1163.7" y1="236.1" y2="236.1"/>
+<line class="thread" x1="591.5" x2="1110.6" y1="237.5" y2="237.5"/>
+<circle class="thread-end" cx="1110.6" cy="237.5" r="1.6"/>
+<line class="thread" x1="591.5" x2="1111.3" y1="238.9" y2="238.9"/>
+<circle class="thread-end" cx="1111.3" cy="238.9" r="1.6"/>
+<line class="thread" x1="593.5" x2="1164.4" y1="240.2" y2="240.2"/>
+<line class="thread-young" x1="608.1" x2="815.6" y1="240.2" y2="240.2"/>
+<line class="thread" x1="593.5" x2="1164.4" y1="241.6" y2="241.6"/>
+<line class="thread" x1="593.5" x2="1164.4" y1="243.0" y2="243.0"/>
+<line class="thread-young" x1="634.0" x2="841.6" y1="243.0" y2="243.0"/>
+<line class="thread" x1="595.6" x2="1158.9" y1="244.4" y2="244.4"/>
+<circle class="thread-end" cx="1158.9" cy="244.4" r="1.6"/>
+<line class="thread" x1="596.3" x2="731.6" y1="245.8" y2="245.8"/>
+<circle class="thread-end" cx="731.6" cy="245.8" r="1.6"/>
+<line class="thread" x1="596.3" x2="1164.4" y1="247.1" y2="247.1"/>
+<line class="thread" x1="596.3" x2="1164.4" y1="248.5" y2="248.5"/>
+<line class="thread-young" x1="596.3" x2="765.3" y1="248.5" y2="248.5"/>
+<line class="thread" x1="598.3" x2="926.2" y1="249.9" y2="249.9"/>
+<circle class="thread-end" cx="926.2" cy="249.9" r="1.6"/>
+<line class="thread" x1="598.3" x2="1164.4" y1="251.3" y2="251.3"/>
+<line class="thread-young" x1="598.3" x2="793.9" y1="251.3" y2="251.3"/>
+<line class="thread" x1="602.4" x2="1159.6" y1="252.7" y2="252.7"/>
+<circle class="thread-end" cx="1159.6" cy="252.7" r="1.6"/>
+<line class="thread" x1="605.8" x2="1164.4" y1="254.0" y2="254.0"/>
+<line class="thread-young" x1="610.2" x2="817.7" y1="254.0" y2="254.0"/>
+<line class="thread" x1="606.5" x2="1111.3" y1="255.4" y2="255.4"/>
+<circle class="thread-end" cx="1111.3" cy="255.4" r="1.6"/>
+<line class="thread" x1="607.1" x2="917.4" y1="256.8" y2="256.8"/>
+<circle class="thread-end" cx="917.4" cy="256.8" r="1.6"/>
+<line class="thread" x1="607.8" x2="754.8" y1="258.2" y2="258.2"/>
+<circle class="thread-end" cx="754.8" cy="258.2" r="1.6"/>
+<line class="thread" x1="612.6" x2="765.0" y1="259.6" y2="259.6"/>
+<line class="thread-young" x1="612.6" x2="730.6" y1="259.6" y2="259.6"/>
+<circle class="thread-end" cx="765.0" cy="259.6" r="1.6"/>
+<line class="thread" x1="612.6" x2="776.6" y1="260.9" y2="260.9"/>
+<circle class="thread-end" cx="776.6" cy="260.9" r="1.6"/>
+<line class="thread" x1="612.6" x2="1159.6" y1="262.3" y2="262.3"/>
+<line class="thread-young" x1="612.6" x2="806.8" y1="262.3" y2="262.3"/>
+<circle class="thread-end" cx="1159.6" cy="262.3" r="1.6"/>
+<line class="thread" x1="617.3" x2="765.0" y1="263.7" y2="263.7"/>
+<line class="thread-young" x1="617.3" x2="668.7" y1="263.7" y2="263.7"/>
+<circle class="thread-end" cx="765.0" cy="263.7" r="1.6"/>
+<line class="thread" x1="617.3" x2="1140.5" y1="265.1" y2="265.1"/>
+<circle class="thread-end" cx="1140.5" cy="265.1" r="1.6"/>
+<line class="thread" x1="620.1" x2="1164.4" y1="266.5" y2="266.5"/>
+<line class="thread-young" x1="658.4" x2="865.9" y1="266.5" y2="266.5"/>
+<line class="thread" x1="621.4" x2="1007.9" y1="267.8" y2="267.8"/>
+<circle class="thread-end" cx="1007.9" cy="267.8" r="1.6"/>
+<line class="thread" x1="621.4" x2="1164.4" y1="269.2" y2="269.2"/>
+<line class="thread-young" x1="631.9" x2="839.4" y1="269.2" y2="269.2"/>
+<line class="thread" x1="626.2" x2="765.0" y1="270.6" y2="270.6"/>
+<line class="thread-young" x1="626.2" x2="736.7" y1="270.6" y2="270.6"/>
+<circle class="thread-end" cx="765.0" cy="270.6" r="1.6"/>
+<line class="thread" x1="631.6" x2="865.0" y1="272.0" y2="272.0"/>
+<line class="thread-young" x1="631.6" x2="684.9" y1="272.0" y2="272.0"/>
+<circle class="thread-end" cx="865.0" cy="272.0" r="1.6"/>
+<line class="thread" x1="631.6" x2="1159.6" y1="273.4" y2="273.4"/>
+<circle class="thread-end" cx="1159.6" cy="273.4" r="1.6"/>
+<line class="thread" x1="631.6" x2="1159.6" y1="274.7" y2="274.7"/>
+<circle class="thread-end" cx="1159.6" cy="274.7" r="1.6"/>
+<line class="thread" x1="635.7" x2="754.8" y1="276.1" y2="276.1"/>
+<line class="thread-young" x1="635.7" x2="754.8" y1="276.1" y2="276.1"/>
+<circle class="thread-end" cx="754.8" cy="276.1" r="1.6"/>
+<line class="thread" x1="635.7" x2="1159.6" y1="277.5" y2="277.5"/>
+<circle class="thread-end" cx="1159.6" cy="277.5" r="1.6"/>
+<line class="thread" x1="635.7" x2="1164.4" y1="278.9" y2="278.9"/>
+<line class="thread" x1="645.2" x2="764.3" y1="280.3" y2="280.3"/>
+<circle class="thread-end" cx="764.3" cy="280.3" r="1.6"/>
+<line class="thread" x1="655.4" x2="1164.4" y1="281.6" y2="281.6"/>
+<line class="thread-young" x1="691.8" x2="899.3" y1="281.6" y2="281.6"/>
+<line class="thread" x1="658.9" x2="1159.6" y1="283.0" y2="283.0"/>
+<line class="thread-young" x1="658.9" x2="861.9" y1="283.0" y2="283.0"/>
+<circle class="thread-end" cx="1159.6" cy="283.0" r="1.6"/>
+<line class="thread" x1="658.9" x2="1164.4" y1="284.4" y2="284.4"/>
+<line class="thread" x1="659.5" x2="754.8" y1="285.8" y2="285.8"/>
+<circle class="thread-end" cx="754.8" cy="285.8" r="1.6"/>
+<line class="thread" x1="659.5" x2="926.2" y1="287.1" y2="287.1"/>
+<circle class="thread-end" cx="926.2" cy="287.1" r="1.6"/>
+<line class="thread" x1="668.4" x2="726.9" y1="288.5" y2="288.5"/>
+<circle class="thread-end" cx="726.9" cy="288.5" r="1.6"/>
+<line class="thread" x1="668.4" x2="764.3" y1="289.9" y2="289.9"/>
+<circle class="thread-end" cx="764.3" cy="289.9" r="1.6"/>
+<line class="thread" x1="668.4" x2="1159.6" y1="291.3" y2="291.3"/>
+<line class="thread-young" x1="679.6" x2="887.1" y1="291.3" y2="291.3"/>
+<circle class="thread-end" cx="1159.6" cy="291.3" r="1.6"/>
+<line class="thread" x1="668.4" x2="1164.4" y1="292.7" y2="292.7"/>
+<line class="thread-young" x1="668.4" x2="715.5" y1="292.7" y2="292.7"/>
+<line class="thread" x1="668.4" x2="1164.4" y1="294.0" y2="294.0"/>
+<line class="thread-young" x1="703.9" x2="911.4" y1="294.0" y2="294.0"/>
+<line class="thread" x1="668.4" x2="1164.4" y1="295.4" y2="295.4"/>
+<line class="thread-young" x1="693.8" x2="901.3" y1="295.4" y2="295.4"/>
+<line class="thread" x1="669.1" x2="754.8" y1="296.8" y2="296.8"/>
+<circle class="thread-end" cx="754.8" cy="296.8" r="1.6"/>
+<line class="thread" x1="672.5" x2="1164.4" y1="298.2" y2="298.2"/>
+<line class="thread-young" x1="696.6" x2="904.1" y1="298.2" y2="298.2"/>
+<line class="thread" x1="673.1" x2="1159.6" y1="299.6" y2="299.6"/>
+<circle class="thread-end" cx="1159.6" cy="299.6" r="1.6"/>
+<line class="thread" x1="677.2" x2="759.5" y1="300.9" y2="300.9"/>
+<circle class="thread-end" cx="759.5" cy="300.9" r="1.6"/>
+<line class="thread" x1="677.2" x2="769.7" y1="302.3" y2="302.3"/>
+<circle class="thread-end" cx="769.7" cy="302.3" r="1.6"/>
+<line class="thread" x1="677.2" x2="907.2" y1="303.7" y2="303.7"/>
+<circle class="thread-end" cx="907.2" cy="303.7" r="1.6"/>
+<line class="thread" x1="677.2" x2="926.9" y1="305.1" y2="305.1"/>
+<circle class="thread-end" cx="926.9" cy="305.1" r="1.6"/>
+<line class="thread" x1="677.2" x2="1111.3" y1="306.5" y2="306.5"/>
+<circle class="thread-end" cx="1111.3" cy="306.5" r="1.6"/>
+<line class="thread" x1="677.2" x2="1139.9" y1="307.8" y2="307.8"/>
+<circle class="thread-end" cx="1139.9" cy="307.8" r="1.6"/>
+<line class="thread" x1="677.2" x2="1164.4" y1="309.2" y2="309.2"/>
+<line class="thread" x1="678.6" x2="760.2" y1="310.6" y2="310.6"/>
+<circle class="thread-end" cx="760.2" cy="310.6" r="1.6"/>
+<line class="thread" x1="678.6" x2="926.2" y1="312.0" y2="312.0"/>
+<circle class="thread-end" cx="926.2" cy="312.0" r="1.6"/>
+<line class="thread" x1="678.6" x2="1159.6" y1="313.4" y2="313.4"/>
+<circle class="thread-end" cx="1159.6" cy="313.4" r="1.6"/>
+<line class="thread" x1="678.6" x2="1159.6" y1="314.7" y2="314.7"/>
+<line class="thread-young" x1="700.7" x2="908.2" y1="314.7" y2="314.7"/>
+<circle class="thread-end" cx="1159.6" cy="314.7" r="1.6"/>
+<line class="thread" x1="678.6" x2="1164.4" y1="316.1" y2="316.1"/>
+<line class="thread" x1="679.9" x2="1164.4" y1="317.5" y2="317.5"/>
+<line class="thread" x1="680.6" x2="755.5" y1="318.9" y2="318.9"/>
+<circle class="thread-end" cx="755.5" cy="318.9" r="1.6"/>
+<line class="thread" x1="682.0" x2="764.3" y1="320.3" y2="320.3"/>
+<circle class="thread-end" cx="764.3" cy="320.3" r="1.6"/>
+<line class="thread" x1="682.0" x2="1158.9" y1="321.6" y2="321.6"/>
+<circle class="thread-end" cx="1158.9" cy="321.6" r="1.6"/>
+<line class="thread" x1="682.7" x2="1111.3" y1="323.0" y2="323.0"/>
+<circle class="thread-end" cx="1111.3" cy="323.0" r="1.6"/>
+<line class="thread" x1="683.3" x2="765.0" y1="324.4" y2="324.4"/>
+<circle class="thread-end" cx="765.0" cy="324.4" r="1.6"/>
+<line class="thread" x1="683.3" x2="765.0" y1="325.8" y2="325.8"/>
+<circle class="thread-end" cx="765.0" cy="325.8" r="1.6"/>
+<line class="thread" x1="688.1" x2="754.8" y1="327.2" y2="327.2"/>
+<circle class="thread-end" cx="754.8" cy="327.2" r="1.6"/>
+<line class="thread" x1="688.1" x2="765.0" y1="328.5" y2="328.5"/>
+<circle class="thread-end" cx="765.0" cy="328.5" r="1.6"/>
+<line class="thread" x1="688.1" x2="765.0" y1="329.9" y2="329.9"/>
+<circle class="thread-end" cx="765.0" cy="329.9" r="1.6"/>
+<line class="thread" x1="688.1" x2="769.7" y1="331.3" y2="331.3"/>
+<circle class="thread-end" cx="769.7" cy="331.3" r="1.6"/>
+<line class="thread" x1="688.1" x2="926.9" y1="332.7" y2="332.7"/>
+<circle class="thread-end" cx="926.9" cy="332.7" r="1.6"/>
+<line class="thread" x1="688.1" x2="1159.6" y1="334.1" y2="334.1"/>
+<circle class="thread-end" cx="1159.6" cy="334.1" r="1.6"/>
+<line class="thread" x1="688.1" x2="1159.6" y1="335.4" y2="335.4"/>
+<circle class="thread-end" cx="1159.6" cy="335.4" r="1.6"/>
+<line class="thread" x1="688.1" x2="1164.4" y1="336.8" y2="336.8"/>
+<line class="thread" x1="692.9" x2="765.0" y1="338.2" y2="338.2"/>
+<line class="thread-young" x1="692.9" x2="704.0" y1="338.2" y2="338.2"/>
+<circle class="thread-end" cx="765.0" cy="338.2" r="1.6"/>
+<line class="thread" x1="692.9" x2="1111.3" y1="339.6" y2="339.6"/>
+<circle class="thread-end" cx="1111.3" cy="339.6" r="1.6"/>
+<line class="thread" x1="692.9" x2="1159.6" y1="341.0" y2="341.0"/>
+<line class="thread-young" x1="692.9" x2="772.8" y1="341.0" y2="341.0"/>
+<circle class="thread-end" cx="1159.6" cy="341.0" r="1.6"/>
+<line class="thread" x1="692.9" x2="1164.4" y1="342.3" y2="342.3"/>
+<line class="thread-young" x1="724.4" x2="931.9" y1="342.3" y2="342.3"/>
+<line class="thread" x1="693.5" x2="925.5" y1="343.7" y2="343.7"/>
+<circle class="thread-end" cx="925.5" cy="343.7" r="1.6"/>
+<line class="thread" x1="693.5" x2="1053.5" y1="345.1" y2="345.1"/>
+<line class="thread-young" x1="693.5" x2="727.2" y1="345.1" y2="345.1"/>
+<circle class="thread-end" cx="1053.5" cy="345.1" r="1.6"/>
+<line class="thread" x1="693.5" x2="1164.4" y1="346.5" y2="346.5"/>
+<line class="thread" x1="696.3" x2="765.0" y1="347.8" y2="347.8"/>
+<circle class="thread-end" cx="765.0" cy="347.8" r="1.6"/>
+<line class="thread" x1="696.3" x2="798.3" y1="349.2" y2="349.2"/>
+<circle class="thread-end" cx="798.3" cy="349.2" r="1.6"/>
+<line class="thread" x1="696.3" x2="925.5" y1="350.6" y2="350.6"/>
+<circle class="thread-end" cx="925.5" cy="350.6" r="1.6"/>
+<line class="thread" x1="696.3" x2="945.3" y1="352.0" y2="352.0"/>
+<circle class="thread-end" cx="945.3" cy="352.0" r="1.6"/>
+<line class="thread" x1="696.3" x2="1164.4" y1="353.4" y2="353.4"/>
+<line class="thread" x1="701.0" x2="765.0" y1="354.7" y2="354.7"/>
+<line class="thread-young" x1="701.0" x2="765.0" y1="354.7" y2="354.7"/>
+<circle class="thread-end" cx="765.0" cy="354.7" r="1.6"/>
+<line class="thread" x1="701.0" x2="926.2" y1="356.1" y2="356.1"/>
+<circle class="thread-end" cx="926.2" cy="356.1" r="1.6"/>
+<line class="thread" x1="701.0" x2="1159.6" y1="357.5" y2="357.5"/>
+<circle class="thread-end" cx="1159.6" cy="357.5" r="1.6"/>
+<line class="thread" x1="701.0" x2="1164.4" y1="358.9" y2="358.9"/>
+<line class="thread-young" x1="953.9" x2="1161.4" y1="358.9" y2="358.9"/>
+<line class="thread" x1="701.0" x2="1164.4" y1="360.3" y2="360.3"/>
+<line class="thread-young" x1="731.9" x2="939.4" y1="360.3" y2="360.3"/>
+<line class="thread" x1="702.4" x2="1159.6" y1="361.6" y2="361.6"/>
+<circle class="thread-end" cx="1159.6" cy="361.6" r="1.6"/>
+<line class="thread" x1="703.1" x2="926.9" y1="363.0" y2="363.0"/>
+<circle class="thread-end" cx="926.9" cy="363.0" r="1.6"/>
+<line class="thread" x1="703.1" x2="926.9" y1="364.4" y2="364.4"/>
+<circle class="thread-end" cx="926.9" cy="364.4" r="1.6"/>
+<line class="thread" x1="703.1" x2="1111.3" y1="365.8" y2="365.8"/>
+<circle class="thread-end" cx="1111.3" cy="365.8" r="1.6"/>
+<line class="thread" x1="707.2" x2="926.2" y1="367.2" y2="367.2"/>
+<circle class="thread-end" cx="926.2" cy="367.2" r="1.6"/>
+<line class="thread" x1="707.2" x2="926.2" y1="368.5" y2="368.5"/>
+<circle class="thread-end" cx="926.2" cy="368.5" r="1.6"/>
+<line class="thread" x1="707.2" x2="999.0" y1="369.9" y2="369.9"/>
+<circle class="thread-end" cx="999.0" cy="369.9" r="1.6"/>
+<line class="thread" x1="707.2" x2="1159.6" y1="371.3" y2="371.3"/>
+<circle class="thread-end" cx="1159.6" cy="371.3" r="1.6"/>
+<line class="thread" x1="707.2" x2="1164.4" y1="372.7" y2="372.7"/>
+<line class="thread" x1="717.4" x2="926.9" y1="374.1" y2="374.1"/>
+<circle class="thread-end" cx="926.9" cy="374.1" r="1.6"/>
+<line class="thread" x1="717.4" x2="1164.4" y1="375.4" y2="375.4"/>
+<line class="thread" x1="717.4" x2="1164.4" y1="376.8" y2="376.8"/>
+<line class="thread-young" x1="756.5" x2="964.0" y1="376.8" y2="376.8"/>
+<line class="thread" x1="718.0" x2="1050.7" y1="378.2" y2="378.2"/>
+<circle class="thread-end" cx="1050.7" cy="378.2" r="1.6"/>
+<line class="thread" x1="719.4" x2="1140.5" y1="379.6" y2="379.6"/>
+<circle class="thread-end" cx="1140.5" cy="379.6" r="1.6"/>
+<line class="thread" x1="735.0" x2="764.3" y1="381.0" y2="381.0"/>
+<circle class="thread-end" cx="764.3" cy="381.0" r="1.6"/>
+<line class="thread" x1="735.0" x2="1164.4" y1="382.3" y2="382.3"/>
+<line class="thread-young" x1="737.4" x2="944.9" y1="382.3" y2="382.3"/>
+<line class="thread" x1="737.1" x2="1164.4" y1="383.7" y2="383.7"/>
+<line class="thread-young" x1="778.8" x2="986.3" y1="383.7" y2="383.7"/>
+<line class="thread" x1="738.5" x2="1164.4" y1="385.1" y2="385.1"/>
+<line class="thread-young" x1="834.8" x2="1042.3" y1="385.1" y2="385.1"/>
+<line class="thread" x1="739.8" x2="764.3" y1="386.5" y2="386.5"/>
+<circle class="thread-end" cx="764.3" cy="386.5" r="1.6"/>
+<line class="thread" x1="741.2" x2="1164.4" y1="387.9" y2="387.9"/>
+<line class="thread-young" x1="741.2" x2="1164.4" y1="387.9" y2="387.9"/>
+<line class="thread" x1="743.9" x2="926.2" y1="389.2" y2="389.2"/>
+<circle class="thread-end" cx="926.2" cy="389.2" r="1.6"/>
+<line class="thread" x1="743.9" x2="1158.9" y1="390.6" y2="390.6"/>
+<circle class="thread-end" cx="1158.9" cy="390.6" r="1.6"/>
+<line class="thread" x1="743.9" x2="1159.6" y1="392.0" y2="392.0"/>
+<line class="thread-young" x1="743.9" x2="835.4" y1="392.0" y2="392.0"/>
+<circle class="thread-end" cx="1159.6" cy="392.0" r="1.6"/>
+<line class="thread" x1="743.9" x2="1164.4" y1="393.4" y2="393.4"/>
+<line class="thread-young" x1="768.0" x2="975.5" y1="393.4" y2="393.4"/>
+<line class="thread" x1="748.7" x2="1136.5" y1="394.8" y2="394.8"/>
+<circle class="thread-end" cx="1136.5" cy="394.8" r="1.6"/>
+<line class="thread" x1="748.7" x2="1164.4" y1="396.1" y2="396.1"/>
+<line class="thread-young" x1="772.8" x2="980.3" y1="396.1" y2="396.1"/>
+<line class="thread" x1="748.7" x2="1164.4" y1="397.5" y2="397.5"/>
+<line class="thread" x1="749.3" x2="765.0" y1="398.9" y2="398.9"/>
+<circle class="thread-end" cx="765.0" cy="398.9" r="1.6"/>
+<line class="thread" x1="749.3" x2="1039.2" y1="400.3" y2="400.3"/>
+<line class="thread-young" x1="749.3" x2="861.1" y1="400.3" y2="400.3"/>
+<circle class="thread-end" cx="1039.2" cy="400.3" r="1.6"/>
+<line class="thread" x1="754.1" x2="820.8" y1="401.7" y2="401.7"/>
+<circle class="thread-end" cx="820.8" cy="401.7" r="1.6"/>
+<line class="thread" x1="754.1" x2="1035.8" y1="403.0" y2="403.0"/>
+<circle class="thread-end" cx="1035.8" cy="403.0" r="1.6"/>
+<line class="thread" x1="754.8" x2="1159.6" y1="404.4" y2="404.4"/>
+<circle class="thread-end" cx="1159.6" cy="404.4" r="1.6"/>
+<line class="thread" x1="755.5" x2="759.5" y1="405.8" y2="405.8"/>
+<circle class="thread-end" cx="759.5" cy="405.8" r="1.6"/>
+<line class="thread" x1="755.5" x2="1140.5" y1="407.2" y2="407.2"/>
+<circle class="thread-end" cx="1140.5" cy="407.2" r="1.6"/>
+<line class="thread" x1="772.5" x2="1164.4" y1="408.5" y2="408.5"/>
+<line class="thread-young" x1="800.7" x2="1008.2" y1="408.5" y2="408.5"/>
+<line class="thread" x1="774.5" x2="1164.4" y1="409.9" y2="409.9"/>
+<line class="thread-young" x1="808.9" x2="1016.4" y1="409.9" y2="409.9"/>
+<line class="thread" x1="798.3" x2="1163.7" y1="411.3" y2="411.3"/>
+<line class="thread" x1="802.4" x2="1154.8" y1="412.7" y2="412.7"/>
+<circle class="thread-end" cx="1154.8" cy="412.7" r="1.6"/>
+<line class="thread" x1="814.7" x2="1092.9" y1="414.1" y2="414.1"/>
+<circle class="thread-end" cx="1092.9" cy="414.1" r="1.6"/>
+<line class="thread" x1="819.4" x2="1164.4" y1="415.4" y2="415.4"/>
+<line class="thread-young" x1="851.8" x2="1059.3" y1="415.4" y2="415.4"/>
+<line class="thread" x1="822.1" x2="1164.4" y1="416.8" y2="416.8"/>
+<line class="thread-young" x1="824.8" x2="1032.3" y1="416.8" y2="416.8"/>
+<line class="thread" x1="848.0" x2="1164.4" y1="418.2" y2="418.2"/>
+<line class="thread-young" x1="880.2" x2="1087.7" y1="418.2" y2="418.2"/>
+<line class="thread" x1="850.7" x2="1039.2" y1="419.6" y2="419.6"/>
+<line class="thread-young" x1="850.7" x2="901.3" y1="419.6" y2="419.6"/>
+<circle class="thread-end" cx="1039.2" cy="419.6" r="1.6"/>
+<line class="thread" x1="857.5" x2="1164.4" y1="421.0" y2="421.0"/>
+<line class="thread-young" x1="938.8" x2="1146.3" y1="421.0" y2="421.0"/>
+<line class="thread" x1="890.9" x2="1164.4" y1="422.3" y2="422.3"/>
+<line class="thread-young" x1="932.0" x2="1139.5" y1="422.3" y2="422.3"/>
+<line class="thread" x1="907.9" x2="1164.4" y1="423.7" y2="423.7"/>
+<line class="thread-young" x1="955.8" x2="1163.3" y1="423.7" y2="423.7"/>
+<line class="thread" x1="907.9" x2="1164.4" y1="425.1" y2="425.1"/>
+<line class="thread-young" x1="948.4" x2="1155.9" y1="425.1" y2="425.1"/>
+<line class="thread" x1="916.7" x2="1164.4" y1="426.5" y2="426.5"/>
+<line class="thread-young" x1="936.8" x2="1144.3" y1="426.5" y2="426.5"/>
+<line class="thread" x1="935.8" x2="1164.4" y1="427.9" y2="427.9"/>
+<line class="thread-young" x1="963.3" x2="1164.4" y1="427.9" y2="427.9"/>
+<line class="thread" x1="960.2" x2="1164.4" y1="429.2" y2="429.2"/>
+<line class="thread-young" x1="1062.0" x2="1164.4" y1="429.2" y2="429.2"/>
+<line class="thread" x1="1012.0" x2="1164.4" y1="430.6" y2="430.6"/>
+<line class="thread-young" x1="1065.4" x2="1164.4" y1="430.6" y2="430.6"/>
+<line class="thread" x1="1034.4" x2="1164.4" y1="432.0" y2="432.0"/>
+<line class="thread-young" x1="1057.9" x2="1164.4" y1="432.0" y2="432.0"/>
+</svg>
+<!--/hero-->
+</div>
+<figcaption>Every linear perpetual the venue has listed since those contracts launched in March
+2022, one thread per coin, running from its first to its last traded day and ordered by listing
+date. The amber stretch of each thread is the part of a coin's life that a one year history rule
+kept out of the book and a sixty day rule lets in. A red dot marks a contract the venue has since
+delisted.</figcaption>
+</figure>
+
+<p class="stand"><span class="big">Report one put the crypto book at 13.7 percent a year. Measured
+again on every coin the venue ever listed, trading each one only while the venue listed it, the
+same book earns 12.2 percent at a Sharpe ratio of 1.29, once costs are charged the way the live
+executor actually pays them.</span></p>
+
+<p class="stand">Twenty one changes were then registered in writing and tested against that
+honest baseline. One survives, in a weak sense. Admitting a coin after sixty days of price history
+rather than a year raises the Sharpe ratio to 1.74 and the annual return at one times gross to
+20.7 percent. It is better in both halves of the sample and fails the significance test it was
+registered under. Most of what follows is about why it was adopted anyway, where its profit
+appears to come from, and how much leverage it can carry.</p>
+
+<div class="score">
+  <div class="cell"><div class="q">Was the published return honest</div>
+    <div class="a">Partly. 11 percent of its legs traded coins the venue had not listed yet, and
+    they earned 34 percent of its gross profit.</div><div class="v"><span class="chip r">inflated</span></div></div>
+  <div class="cell"><div class="q">Were costs overstated</div>
+    <div class="a">Yes. Per leg the backtest charged 6.7 basis points a week. Charged on net
+    trades, as the executor sends them, it is 2.4.</div><div class="v"><span class="chip s">corrected</span></div></div>
+  <div class="cell"><div class="q">Does portfolio construction add profit</div>
+    <div class="a">Six constructions tested. None passes, and the best one adds nothing once the
+    universe is wider.</div><div class="v"><span class="chip r">refuted</span></div></div>
+  <div class="cell"><div class="q">Execution, training, crowding, overlays</div>
+    <div class="a">Maker exits, three training changes, cross venue data, a trend sleeve and a
+    squeeze rule all fail.</div><div class="v"><span class="chip r">refuted</span></div></div>
+  <div class="cell"><div class="q">Does admitting young coins help</div>
+    <div class="a">Sharpe 1.29 becomes 1.74, better in both halves, at a <i>t</i> statistic of 1.1.</div>
+    <div class="v"><span class="chip am">adopted, unproven</span></div></div>
+  <div class="cell"><div class="q">How much leverage</div>
+    <div class="a">Two times gross. Three would break the risk budget if only half the backtest
+    edge is real.</div><div class="v"><span class="chip i">2&#215; in paper</span></div></div>
+</div>
+
+<section class="part">
+<div class="num"><b>1</b><span>The yardstick</span></div>
+<h2>Three corrections before anything was tested</h2>
+
+<p class="lede">An experiment that compares a change against a baseline inherits every error in
+the baseline. Before any of the twenty one changes ran, the baseline itself moved three times, twice down
+and once up, and it ended close to where it started for reasons that have nothing to do with
+each other.</p>
+
+<h3>The venue had not listed some of those coins yet</h3>
+
+<p>Signals come from spot prices on one exchange and trades go to perpetual futures on another.
+The backtest in report one assumed that any coin with a year of spot history could be traded. The
+venue's own record says otherwise. Its linear perpetuals launched on 22 March 2022, five days
+before the test sample begins, with seventeen contracts, and the rest arrived over the following
+months and years. A listing calendar was rebuilt from the venue's daily candles, taking the first
+and last day on which each contract actually traded. The volume filter matters, because a
+delisted contract keeps printing flat candles with zero volume, which would otherwise make it
+look alive forever.</p>
+
+<p>Under that calendar, 8,839 of the deployed book's 77,236 legs, 11.4 percent, sat in coins the
+venue did not list at the time. Most fell in 2022 and 2023. They earned 34 percent of the
+book's gross profit, roughly three times their share of the legs, which is the signature of a
+selection effect rather than noise. Restricting legs to listed coins gives the baseline called
+B0, at 11.8 percent a year and a Sharpe ratio of 1.24.</p>
+
+<h3>And the universe had forgotten the coins it lost</h3>
+
+<p>The coin list behind report one was built from the contracts listed on the day it was built,
+with older history attached. Coins the venue had listed and then dropped were missing, which is
+survivorship in its most familiar form.<sup>1</sup> Report two found the same mechanism erasing an
+equity strategy completely. Here the damage is milder. Adding the 107 coins the venue once listed
+and later removed lowers the Sharpe ratio from 1.24 to 1.05 at the original cost model.</p>
+
+<h3>Then the costs turned out to be overstated</h3>
+
+<p>The book runs four sleeves, each split into daily tranches that overlap for one or two weeks.
+The backtest charged a round trip on every one of those virtual legs. The live executor does
+something cheaper. Each day it adds up every tranche's target per coin and sends only the change
+in the net position, so a coin that one tranche sells while another buys costs nothing. Charging
+costs on that net trade instead gives 2.4 basis points a week at one times gross, against 6.7 per
+leg, and the difference is identical in both halves of the sample because it is arithmetic
+rather than luck.</p>
+
+<p>Put together, the honest baseline used for everything below is every coin the venue ever
+listed, traded only while listed, with netted costs. It returns 12.2 percent a year at a Sharpe
+ratio of 1.29, with a deepest drawdown of 12.2 percent.</p>
+
+<figure>
+<!--fig1-->
+<svg viewBox="0 0 720 350" class="fig" role="img" aria-label="Waterfall of the Sharpe ratio. The published 1.35 falls to 1.24 with venue listing dates and to 1.05 on every coin ever listed, rises to 1.29 with netted costs, which is the honest baseline, rises to 1.76 with the sixty-day history rule, and ends at 1.74 once the 26 current listings are added.">
+<line class="axis" x1="58" x2="704" y1="250.0" y2="250.0"/><text class="tick" x="49" y="254.0" text-anchor="end">0.0</text>
+<line class="grid" x1="58" x2="704" y1="197.5" y2="197.5"/><text class="tick" x="49" y="201.5" text-anchor="end">0.5</text>
+<line class="grid" x1="58" x2="704" y1="145.0" y2="145.0"/><text class="tick" x="49" y="149.0" text-anchor="end">1.0</text>
+<line class="grid" x1="58" x2="704" y1="92.5" y2="92.5"/><text class="tick" x="49" y="96.5" text-anchor="end">1.5</text>
+<line class="grid" x1="58" x2="704" y1="40.0" y2="40.0"/><text class="tick" x="49" y="44.0" text-anchor="end">2.0</text>
+<text class="axlab" transform="rotate(-90 16 145.0)" x="16" y="145.0" text-anchor="middle">Sharpe ratio</text>
+<rect class="bar-level" x="75.8" y="108.6" width="45.2" height="141.4"><title>published backtest, Sharpe 1.35, 13.7% a year</title></rect><text class="pt" x="98.4" y="100.6" text-anchor="middle">1.35</text><text class="note" x="98.4" y="300" text-anchor="middle">13.7% a year</text>
+<text class="lab" x="98.4" y="268" text-anchor="middle">published</text>
+<text class="lab" x="98.4" y="282" text-anchor="middle">backtest</text>
+<rect class="bar-down" x="156.5" y="108.6" width="45.2" height="11.0"><title>venue listing dates, &#8722;0.10</title></rect><text class="pt-d" x="179.1" y="100.6" text-anchor="middle">&#8722;0.10</text>
+<line class="connector" x1="121.0" x2="156.5" y1="108.6" y2="108.6"/>
+<text class="lab" x="179.1" y="268" text-anchor="middle">venue listing</text>
+<text class="lab" x="179.1" y="282" text-anchor="middle">dates</text>
+<rect class="bar-down" x="237.3" y="119.6" width="45.2" height="20.1"><title>every coin ever listed, &#8722;0.19</title></rect><text class="pt-d" x="259.9" y="111.6" text-anchor="middle">&#8722;0.19</text>
+<line class="connector" x1="201.7" x2="237.3" y1="119.6" y2="119.6"/>
+<text class="lab" x="259.9" y="268" text-anchor="middle">every coin</text>
+<text class="lab" x="259.9" y="282" text-anchor="middle">ever listed</text>
+<rect class="bar-up" x="318.0" y="114.2" width="45.2" height="25.5"><title>netted costs, +0.24</title></rect><text class="pt-d" x="340.6" y="106.2" text-anchor="middle">+0.24</text>
+<line class="connector" x1="282.5" x2="318.0" y1="139.7" y2="139.7"/>
+<text class="lab" x="340.6" y="268" text-anchor="middle">netted</text>
+<text class="lab" x="340.6" y="282" text-anchor="middle">costs</text>
+<rect class="bar-level" x="398.8" y="114.2" width="45.2" height="135.8"><title>honest baseline, Sharpe 1.29, 12.2% a year</title></rect><text class="pt" x="421.4" y="106.2" text-anchor="middle">1.29</text><text class="note" x="421.4" y="300" text-anchor="middle">12.2% a year</text>
+<line class="connector" x1="363.2" x2="398.8" y1="114.2" y2="114.2"/>
+<text class="lab" x="421.4" y="268" text-anchor="middle">honest</text>
+<text class="lab" x="421.4" y="282" text-anchor="middle">baseline</text>
+<rect class="bar-up" x="479.5" y="65.1" width="45.2" height="49.1"><title>sixty-day rule, +0.47</title></rect><text class="pt-d" x="502.1" y="57.1" text-anchor="middle">+0.47</text>
+<line class="connector" x1="444.0" x2="479.5" y1="114.2" y2="114.2"/>
+<text class="lab" x="502.1" y="268" text-anchor="middle">sixty-day</text>
+<text class="lab" x="502.1" y="282" text-anchor="middle">rule</text>
+<rect class="bar-down" x="560.3" y="65.1" width="45.2" height="2.7"><title>current listings, &#8722;0.03</title></rect><text class="pt-d" x="582.9" y="57.1" text-anchor="middle">&#8722;0.03</text>
+<line class="connector" x1="524.7" x2="560.3" y1="65.1" y2="65.1"/>
+<text class="lab" x="582.9" y="268" text-anchor="middle">current</text>
+<text class="lab" x="582.9" y="282" text-anchor="middle">listings</text>
+<rect class="bar-v2" x="641.0" y="67.8" width="45.2" height="182.2"><title>version two, Sharpe 1.74, 20.7% a year</title></rect><text class="pt" x="663.6" y="59.8" text-anchor="middle">1.74</text><text class="note" x="663.6" y="300" text-anchor="middle">20.7% a year</text>
+<line class="connector" x1="605.5" x2="641.0" y1="67.8" y2="67.8"/>
+<text class="lab" x="663.6" y="268" text-anchor="middle">version</text>
+<text class="lab" x="663.6" y="282" text-anchor="middle">two</text>
+<line class="sep" x1="300.2" x2="300.2" y1="10" y2="306"/><text class="note" x="62" y="22">costs per leg</text><text class="note" x="306.2" y="22">costs on the net trades the executor sends</text>
+</svg>
+<!--/fig1-->
+<figcaption><b>Figure 1.</b> The Sharpe ratio of the same four-sleeve book as each correction is
+applied, over the same 233 weeks from March 2022 to September 2026 at one times gross. The first
+three columns charge costs per leg, the rest charge them on the net trades the live executor
+actually sends. The two corrections on the left take away what the backtest could never have
+traded. The cost correction gives back most of what they took, and the honest baseline ends
+a little below the published figure. The sixty-day history rule alone raises it to 1.76, and adding
+the 26 coins the venue lists today, which every earlier universe had missed, leaves v2 at 1.74. The
+amber bar is v2, the subject of part three, measured the same way.</figcaption>
+</figure>
+
+<div class="note-box">
+<span class="h">Funding on the venue that is actually used</span>
+<p>The backtest prices funding from the spot exchange's sister futures market, because that
+history is long. The venue's own funding is only published for about the last twelve months, so
+an archive of it now runs daily. Over the 15,467 legs that overlap the venue's history, from
+October 2025 to August 2026, the two venues' funding per leg correlates at 0.96 for longs and 0.97
+for shorts.</p>
+<p>The carry sleeve is the exception worth recording. It received 35.5 basis points per leg on the
+venue against 43.7 in the backtest, about a fifth less. Eleven months are too few to correct the
+backtest with, so this stands as a known optimism in the carry sleeve's figures.</p>
+</div>
+</section>
+
+<section class="part">
+<div class="num"><b>2</b><span>Twenty arms</span></div>
+<h2>Registered first, then run once</h2>
+
+<p class="lede">Every change was written down with its parameters before it ran, so the rules
+could not drift towards whatever happened to work. Each arm is compared with its baseline after
+being rescaled to the same volatility, because a change that only adds risk is just leverage, and
+leverage is decided separately.</p>
+
+<p>An arm passed if three things held. The weekly gain at equal volatility needed a <i>t</i>
+statistic above two, with a Newey and West variance to respect the overlap between weeks.<sup>2</sup>
+The gain had to be positive in both halves of the sample. And the arm's annual return at the
+largest leverage inside the risk budget had to beat the baseline's at its own largest leverage.
+Counting the roughly forty configurations of report one, the final book is the best of 61
+trials, which is the number its deflated Sharpe ratio is computed against.<sup>3,4</sup></p>
+
+<figure>
+<!--fig2-->
+<svg viewBox="0 0 720 704" class="fig" role="img" aria-label="Forest plot of twenty arms and the combined book: the weekly gain over the baseline at equal volatility, with a 95 percent interval. Only the combined book and the history arms lie mostly to the right of zero, and every interval crosses zero.">
+<line class="grid" x1="280.0" x2="280.0" y1="32" y2="668"/><text class="tick" x="280.0" y="684" text-anchor="middle">&#8722;20</text>
+<line class="grid" x1="349.2" x2="349.2" y1="32" y2="668"/><text class="tick" x="349.2" y="684" text-anchor="middle">&#8722;10</text>
+<line class="axis" x1="418.4" x2="418.4" y1="32" y2="668"/><text class="tick" x="418.4" y="684" text-anchor="middle">0</text>
+<line class="grid" x1="487.6" x2="487.6" y1="32" y2="668"/><text class="tick" x="487.6" y="684" text-anchor="middle">+10</text>
+<line class="grid" x1="556.8" x2="556.8" y1="32" y2="668"/><text class="tick" x="556.8" y="684" text-anchor="middle">+20</text>
+<line class="grid" x1="626.0" x2="626.0" y1="32" y2="668"/><text class="tick" x="626.0" y="684" text-anchor="middle">+30</text>
+<text class="axlab" x="453.0" y="700" text-anchor="middle">gain over baseline at equal volatility, basis points a week</text><text class="note" x="424.4" y="26">better</text><text class="note" x="412.4" y="26" text-anchor="end">worse</text><text class="note" x="704" y="26" text-anchor="end"><tspan font-style="italic">t</tspan> statistic</text>
+<text class="grp" x="8" y="62">Construction</text>
+<g class="arm"><title>K1 inverse-volatility legs. &#8722;1.4 bp a week, t &#8722;0.40, halves &#8722;2.1 and &#8722;0.8</title><text class="lab" x="20" y="84">K1 inverse-volatility legs</text><line class="ci" x1="360.7" x2="456.4" y1="80" y2="80"/><circle class="pt-open" cx="408.6" cy="80" r="4.6"/><text class="tick" x="704" y="84" text-anchor="end">&#8722;0.40</text></g>
+<g class="arm"><title>K2 beta-neutral sides. +6.3 bp a week, t +0.71, halves +10.6 and +2.1</title><text class="lab" x="20" y="105">K2 beta-neutral sides</text><line class="ci" x1="341.4" x2="582.9" y1="101" y2="101"/><circle class="pt-full" cx="462.2" cy="101" r="4.6"/><text class="tick" x="704" y="105" text-anchor="end">+0.71</text></g>
+<g class="arm"><title>K3 inverse-volatility sleeves. &#8722;1.5 bp a week, t &#8722;0.61, halves &#8722;2.9 and &#8722;0.1</title><text class="lab" x="20" y="126">K3 inverse-volatility sleeves</text><line class="ci" x1="374.9" x2="441.3" y1="122" y2="122"/><circle class="pt-open" cx="408.1" cy="122" r="4.6"/><text class="tick" x="704" y="126" text-anchor="end">&#8722;0.61</text></g>
+<g class="arm"><title>K4 one composite score. +4.2 bp a week, t +0.88, halves +1.5 and +7.0</title><text class="lab" x="20" y="147">K4 one composite score</text><line class="ci" x1="382.7" x2="512.7" y1="143" y2="143"/><circle class="pt-full" cx="447.7" cy="143" r="4.6"/><text class="tick" x="704" y="147" text-anchor="end">+0.88</text></g>
+<g class="arm"><title>K5 majors hedge the shorts. +5.7 bp a week, t +0.64, halves +13.3 and &#8722;1.9</title><text class="lab" x="20" y="168">K5 majors hedge the shorts</text><line class="ci" x1="336.6" x2="578.8" y1="164" y2="164"/><circle class="pt-open" cx="457.7" cy="164" r="4.6"/><text class="tick" x="704" y="168" text-anchor="end">+0.64</text></g>
+<g class="arm"><title>K6 rank-weighted legs. +0.9 bp a week, t +0.23, halves +1.6 and +0.2</title><text class="lab" x="20" y="189">K6 rank-weighted legs</text><line class="ci" x1="374.2" x2="474.4" y1="185" y2="185"/><circle class="pt-full" cx="424.3" cy="185" r="4.6"/><text class="tick" x="704" y="189" text-anchor="end">+0.23</text></g>
+<text class="grp" x="8" y="228">Execution and training</text>
+<g class="arm"><title>E2 maker exits. &#8722;0.4 bp a week, t &#8722;1.87, halves &#8722;0.5 and &#8722;0.4</title><text class="lab" x="20" y="250">E2 maker exits</text><line class="ci" x1="412.2" x2="418.5" y1="246" y2="246"/><circle class="pt-open" cx="415.4" cy="246" r="4.6"/><text class="tick" x="704" y="250" text-anchor="end">&#8722;1.87</text></g>
+<g class="arm"><title>T1 train on every coin. &#8722;0.8 bp a week, t &#8722;0.22, halves &#8722;4.1 and +2.5</title><text class="lab" x="20" y="271">T1 train on every coin</text><line class="ci" x1="363.3" x2="462.2" y1="267" y2="267"/><circle class="pt-open" cx="412.8" cy="267" r="4.6"/><text class="tick" x="704" y="271" text-anchor="end">&#8722;0.22</text></g>
+<g class="arm"><title>T3 liquidity weights. +0.8 bp a week, t +0.31, halves &#8722;5.7 and +7.4</title><text class="lab" x="20" y="292">T3 liquidity weights</text><line class="ci" x1="387.3" x2="461.2" y1="288" y2="288"/><circle class="pt-open" cx="424.3" cy="288" r="4.6"/><text class="tick" x="704" y="292" text-anchor="end">+0.31</text></g>
+<g class="arm"><title>T4 refit monthly. &#8722;4.7 bp a week, t &#8722;1.52, halves &#8722;6.0 and &#8722;3.4</title><text class="lab" x="20" y="313">T4 refit monthly</text><line class="ci" x1="344.0" x2="427.9" y1="309" y2="309"/><circle class="pt-open" cx="386.0" cy="309" r="4.6"/><text class="tick" x="704" y="313" text-anchor="end">&#8722;1.52</text></g>
+<text class="grp" x="8" y="352">Overlays and new streams</text>
+<g class="arm"><title>Q1 squeeze overlay. &#8722;0.1 bp a week, t &#8722;0.77, halves 0.0 and &#8722;0.2</title><text class="lab" x="20" y="374">Q1 squeeze overlay</text><line class="ci" x1="415.8" x2="419.5" y1="370" y2="370"/><circle class="pt-open" cx="417.7" cy="370" r="4.6"/><text class="tick" x="704" y="374" text-anchor="end">&#8722;0.77</text></g>
+<g class="arm"><title>C2 cross-venue crowding. +0.3 bp a week, t +0.14, halves &#8722;2.6 and +3.2</title><text class="lab" x="20" y="395">C2 cross-venue crowding</text><line class="ci" x1="393.6" x2="446.9" y1="391" y2="391"/><circle class="pt-open" cx="420.2" cy="391" r="4.6"/><text class="tick" x="704" y="395" text-anchor="end">+0.14</text></g>
+<g class="arm"><title>H1 trend on the majors. +0.3 bp a week, t +0.15, halves +1.5 and &#8722;0.9</title><text class="lab" x="20" y="416">H1 trend on the majors</text><line class="ci" x1="391.2" x2="450.1" y1="412" y2="412"/><circle class="pt-open" cx="420.6" cy="412" r="4.6"/><text class="tick" x="704" y="416" text-anchor="end">+0.15</text></g>
+<g class="arm"><title>S1 drop the momentum sleeve. &#8722;1.8 bp a week, t &#8722;0.45, halves &#8722;4.1 and +0.5</title><text class="lab" x="20" y="437">S1 drop the momentum sleeve</text><line class="ci" x1="351.1" x2="460.8" y1="433" y2="433"/><circle class="pt-open" cx="405.9" cy="433" r="4.6"/><text class="tick" x="704" y="437" text-anchor="end">&#8722;0.45</text></g>
+<text class="grp" x="8" y="476">Breadth</text>
+<g class="arm"><title>U4 top 40 by volume. &#8722;3.7 bp a week, t &#8722;0.98, halves &#8722;4.6 and &#8722;2.8</title><text class="lab" x="20" y="498">U4 top 40 by volume</text><line class="ci" x1="341.9" x2="443.9" y1="494" y2="494"/><circle class="pt-open" cx="392.9" cy="494" r="4.6"/><text class="tick" x="704" y="498" text-anchor="end">&#8722;0.98</text></g>
+<g class="arm"><title>U5 top 50 by volume. &#8722;0.9 bp a week, t &#8722;0.15, halves &#8722;8.3 and +6.4</title><text class="lab" x="20" y="519">U5 top 50 by volume</text><line class="ci" x1="328.2" x2="496.1" y1="515" y2="515"/><circle class="pt-open" cx="412.2" cy="515" r="4.6"/><text class="tick" x="704" y="519" text-anchor="end">&#8722;0.15</text></g>
+<g class="arm"><title>U1 history of 180 days. +3.7 bp a week, t +0.48, halves +3.2 and +4.1</title><text class="lab" x="20" y="540">U1 history of 180 days</text><line class="ci" x1="340.4" x2="547.1" y1="536" y2="536"/><circle class="pt-full" cx="443.8" cy="536" r="4.6"/><text class="tick" x="704" y="540" text-anchor="end">+0.48</text></g>
+<g class="arm"><title>U2 history of 90 days. +4.8 bp a week, t +0.61, halves +3.2 and +6.5</title><text class="lab" x="20" y="561">U2 history of 90 days</text><line class="ci" x1="343.6" x2="560.2" y1="557" y2="557"/><circle class="pt-full" cx="451.9" cy="557" r="4.6"/><text class="tick" x="704" y="561" text-anchor="end">+0.61</text></g>
+<g class="arm"><title>U3 history of 60 days. +5.7 bp a week, t +0.71, halves +4.7 and +6.6</title><text class="lab" x="20" y="582">U3 history of 60 days</text><line class="ci" x1="349.0" x2="566.2" y1="578" y2="578"/><circle class="pt-full" cx="457.6" cy="578" r="4.6"/><text class="tick" x="704" y="582" text-anchor="end">+0.71</text></g>
+<text class="grp" x="8" y="621">Combined</text>
+<g class="arm-v2"><title>v2 against the honest baseline. +7.9 bp a week, t +1.12, halves +11.2 and +4.6</title><text class="lab" x="20" y="643">v2 against the honest baseline</text><line class="ci" x1="377.7" x2="567.9" y1="639" y2="639"/><circle class="pt-full" cx="472.8" cy="639" r="4.6"/><text class="tick" x="704" y="643" text-anchor="end">+1.12</text></g>
+</svg>
+<!--/fig2-->
+<figcaption><b>Figure 2.</b> Every registered arm, as its weekly gain over the baseline at equal
+volatility, with a 95 percent interval from the autocorrelation-robust standard error. A filled
+dot is positive in both halves of the sample, a hollow one is not. Arms are measured against
+B0 with costs per leg. No interval clears zero, which is the pass rule restated. Construction, execution and training arms cluster around nothing. The
+history arms sit further right, step by step as the rule loosens, and the combined book is
+measured against the honest baseline with netted costs. Pointing at a row gives its numbers.</figcaption>
+</figure>
+
+<h3>Construction</h3>
+<div class="arm-list">
+<div class="arm-e"><div class="id">K2</div><div><h4>Beta-neutral sides</h4>
+<p>The two sides of each sleeve were scaled so that the book carries no net beta to the alt
+market, in the spirit of Frazzini and Pedersen.<sup>5</sup> On the old universe this was the
+strongest arm of the whole programme, raising the netted Sharpe ratio from 1.48 to 1.88 and better
+in both halves.</p>
+<span class="res">Gain 7.2 bp a week with netted costs, t 0.81. On the wider universe it adds nothing, 1.72 against 1.76 without it.</span></div></div>
+<div class="arm-e"><div class="id">K1 K6</div><div><h4>Inverse-volatility and rank-weighted legs</h4>
+<p>Two ways of tilting each side towards its best or calmest names.</p>
+<span class="res">&minus;1.4 and +0.9 bp a week, t &minus;0.40 and 0.23. Equal weights stay.</span></div></div>
+<div class="arm-e"><div class="id">K3</div><div><h4>Sleeves sized by inverse volatility</h4>
+<p>Volatility management raises Sharpe ratios in many equity factors.<sup>6</sup> Here the sleeves'
+volatility is already similar and changes slowly, so there is little to manage.</p>
+<span class="res">&minus;1.5 bp a week, t &minus;0.61.</span></div></div>
+<div class="arm-e"><div class="id">K4</div><div><h4>One composite score</h4>
+<p>The four sleeve scores averaged into a single weekly book.</p>
+<span class="res">Higher raw return and a drawdown of 23.5 percent, so it carries far less leverage. t 0.88.</span></div></div>
+<div class="arm-e"><div class="id">K5</div><div><h4>Majors hedge the shorts</h4>
+<p>The alt longs replaced by bitcoin and ether sized to each short's beta, which asks whether the
+long side earns anything of its own.</p>
+<span class="res">Positive in the first half and negative in the second once the hedge pays its funding. t 0.52.</span></div></div>
+</div>
+
+<p>K2 deserves a sentence more, because its disappearance is informative. Two arms that each help
+alone and do nothing together are usually buying the same thing. The wider universe changes which
+coins land on each side, and whatever beta imbalance K2 was correcting in the old universe appears
+to be corrected by that change as well. The data cannot separate the two explanations, so the
+simpler book, without K2, was kept.</p>
+
+<h3>Execution and training</h3>
+<div class="arm-list">
+<div class="arm-e"><div class="id">E2</div><div><h4>Maker exits</h4>
+<p>Posting the closing order at the touch saves a taker fee when it fills. The fills are not
+random, though. A resting sell fills when buyers arrive and the price is about to move away from
+it, which is the adverse selection that Glosten and Milgrom formalised.<sup>7</sup> Unfilled exits
+then cross two hours later, after the price has drifted.</p>
+<span class="res">&minus;0.4 bp a week, t &minus;1.87, negative in both halves. The cleanest failure in the set.</span></div></div>
+<div class="arm-e"><div class="id">T4</div><div><h4>Refitting every month</h4>
+<p>Fresher models sound strictly better. They are not, because a tree ensemble refitted on a few
+more weeks of overlapping labels mostly re-estimates noise and turns its ranking over without
+cause.</p>
+<span class="res">&minus;4.7 bp a week, t &minus;1.52, negative in both halves.</span></div></div>
+<div class="arm-e"><div class="id">T1 T3</div><div><h4>Training on every coin, and weighting by liquidity</h4>
+<p>Two changes to which rows the models learn from.</p>
+<span class="res">&minus;0.8 and +0.8 bp a week, each with halves of opposite sign.</span></div></div>
+</div>
+
+<h3>Overlays and second streams</h3>
+<div class="arm-list">
+<div class="arm-e"><div class="id">Q1</div><div><h4>A squeeze rule for the short side</h4>
+<p>Halve the shorts when alts have beaten bitcoin by twenty points in a month and funding is in
+its top decile, a crude guard against the crashes that hit momentum books.<sup>8</sup></p>
+<span class="res">The registered rule was active on one day out of 2,069. It changes nothing because it almost never fires.</span></div></div>
+<div class="arm-e"><div class="id">C2</div><div><h4>Crowding across venues</h4>
+<p>The gap between two venues' funding rates and the shift in open interest from one to the
+other, as ranked features. Funding on perpetual futures is a price of leverage demand,<sup>9</sup>
+so a venue where longs pay more might flag a crowded coin.</p>
+<span class="res">+0.3 bp a week, t 0.14, negative in the first half. Report one's positioning features failed the same way.</span></div></div>
+<div class="arm-e"><div class="id">H1</div><div><h4>Trend on bitcoin, ether and solana</h4>
+<p>Time series momentum, the most replicated trend signal there is,<sup>10</sup> as a fifth sleeve
+and a hedge for the regime that hurts a market-neutral alt book.</p>
+<span class="res">Sharpe 0.29 alone and correlated at 0.06 with the book. Too weak to pay for its capital. t 0.15.</span></div></div>
+<div class="arm-e"><div class="id">S1</div><div><h4>Dropping the momentum sleeve</h4>
+<p>The weakest sleeve, kept in report one because it hedges the other three.</p>
+<span class="res">Return rises and the drawdown deepens from 10.5 to 17.2 percent. The hedge is real. t &minus;0.45.</span></div></div>
+</div>
+
+<p>The common thread in the failures is that each one re-arranges information the model already
+has. Weights, refits, overlays and execution tricks act on the same ranked list of the same coins.
+None of them changes what the ranking can see, and the ranking was evidently close to as good as
+those levers can make it.</p>
+</section>
+
+<section class="part">
+<div class="num"><b>3</b><span>Breadth</span></div>
+<h2>Letting the young coins in</h2>
+
+<p class="lede">The book ranks coins by liquidity first and trades the thirty most liquid. Every
+earlier version also required a full year of history before a coin could be ranked at all. Recent
+listings carry a large share of crypto's trading volume, and coins under a year old now make up
+a sixth of the legs v2 trades. The old rule kept every one of them out.</p>
+
+<p>The history requirement was loosened in three registered steps on the honest universe, from
+365 days to 180, then 90, then 60. The Sharpe ratio rose at every step. A monotone response to a
+dose is weaker evidence than significance and stronger evidence than a single good number, since
+noise has no reason to line up in order.</p>
+
+<div class="tscroll">
+<table class="data">
+<caption>The history rule on the honest universe, at one times gross with costs per leg, 233
+weeks. Widening by liquidity instead, to the top 40 or top 50 coins on the old universe, lowers
+the Sharpe ratio to 1.04 and 1.19. Breadth pays when the added coins are worth ranking, and less
+liquid copies of the same kind of coin are not.</caption>
+<thead><tr><th>Minimum history</th><th class="n">Return</th><th class="n">Sharpe</th>
+<th class="n">Max drawdown</th><th class="n">Weekly mean</th></tr></thead>
+<tbody>
+<tr><td>365 days, the old rule</td><td class="n">9.7%</td><td class="n">1.05</td><td class="n">&minus;13.6%</td><td class="n">18.7 bp</td></tr>
+<tr><td>180 days</td><td class="n">14.8%</td><td class="n">1.45</td><td class="n">&minus;16.5%</td><td class="n">27.5 bp</td></tr>
+<tr><td>90 days</td><td class="n">16.6%</td><td class="n">1.51</td><td class="n">&minus;13.3%</td><td class="n">30.7 bp</td></tr>
+<tr><td>60 days</td><td class="n">17.8%</td><td class="n">1.56</td><td class="n">&minus;14.6%</td><td class="n">32.6 bp</td></tr>
+<tr class="hl"><td>60 days, with the 26 current listings</td><td class="n">18.1%</td><td class="n">1.54</td><td class="n">&minus;14.6%</td><td class="n">33.2 bp</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>The last row is v2. The 26 coins added in October 2026 enter the backtest only where the venue
+listed them, so all of their legs fall in 2025 and 2026. With netted costs v2 returns 20.7 percent a
+year at a Sharpe ratio of 1.74, a deepest drawdown of 13.3 percent and a worst week of
+&minus;3.8 percent.</p>
+
+<figure>
+<!--fig3-->
+<svg viewBox="0 0 720 340" class="fig" role="img" aria-label="Cumulative growth of version two and the honest baseline over 233 weeks, with the gap between them shaded and the halves of the sample marked">
+<line class="axis" x1="58" x2="704" y1="239.7" y2="239.7"/><text class="tick" x="49" y="243.7" text-anchor="end">1&#215;</text>
+<line class="grid" x1="58" x2="704" y1="186.1" y2="186.1"/><text class="tick" x="49" y="190.1" text-anchor="end">1.25&#215;</text>
+<line class="grid" x1="58" x2="704" y1="142.4" y2="142.4"/><text class="tick" x="49" y="146.4" text-anchor="end">1.5&#215;</text>
+<line class="grid" x1="58" x2="704" y1="73.4" y2="73.4"/><text class="tick" x="49" y="77.4" text-anchor="end">2&#215;</text>
+<text class="tick" x="169.4" y="290" text-anchor="middle">2023</text><line class="grid" x1="169.4" x2="169.4" y1="270" y2="275"/>
+<text class="tick" x="317.0" y="290" text-anchor="middle">2024</text><line class="grid" x1="317.0" x2="317.0" y1="270" y2="275"/>
+<text class="tick" x="461.8" y="290" text-anchor="middle">2025</text><line class="grid" x1="461.8" x2="461.8" y1="270" y2="275"/>
+<text class="tick" x="606.5" y="290" text-anchor="middle">2026</text><line class="grid" x1="606.5" x2="606.5" y1="270" y2="275"/>
+<polygon class="gap" points="58.0,240.3 60.8,238.2 63.6,237.8 66.4,239.3 69.1,235.8 71.9,232.4 74.7,230.4 77.5,220.5 80.3,217.0 83.1,214.6 85.8,213.1 88.6,219.4 91.4,227.4 94.2,230.1 97.0,231.4 99.8,237.3 102.6,240.8 105.3,241.8 108.1,244.7 110.9,244.3 113.7,243.5 116.5,241.3 119.3,240.7 122.0,240.4 124.8,239.1 127.6,236.8 130.4,235.1 133.2,232.5 136.0,230.7 138.8,231.3 141.5,233.3 144.3,236.3 147.1,235.8 149.9,241.9 152.7,241.8 155.5,244.2 158.2,241.5 161.0,235.7 163.8,229.9 166.6,227.4 169.4,236.4 172.2,243.0 174.9,243.1 177.7,243.8 180.5,247.3 183.3,246.1 186.1,246.6 188.9,245.8 191.7,243.0 194.4,239.7 197.2,239.7 200.0,235.4 202.8,234.1 205.6,233.9 208.4,233.7 211.1,232.8 213.9,230.7 216.7,228.2 219.5,222.8 222.3,224.0 225.1,222.6 227.9,223.6 230.6,221.1 233.4,216.7 236.2,220.8 239.0,219.7 241.8,220.1 244.6,217.7 247.3,215.7 250.1,214.4 252.9,215.2 255.7,214.6 258.5,213.0 261.3,210.6 264.1,208.2 266.8,207.8 269.6,202.8 272.4,201.4 275.2,202.5 278.0,202.3 280.8,200.9 283.5,199.3 286.3,198.9 289.1,195.1 291.9,193.1 294.7,190.4 297.5,188.7 300.2,187.6 303.0,183.8 305.8,183.6 308.6,183.3 311.4,182.5 314.2,185.3 317.0,184.7 319.7,185.8 322.5,183.3 325.3,185.2 328.1,185.7 330.9,186.2 333.7,186.5 336.4,182.6 339.2,187.2 342.0,188.6 344.8,186.2 347.6,188.7 350.4,182.9 353.2,178.3 355.9,172.9 358.7,175.8 361.5,174.5 364.3,180.7 367.1,185.0 369.9,189.1 372.6,192.7 375.4,189.2 378.2,182.0 381.0,173.7 383.8,173.2 386.6,166.9 389.4,165.5 392.1,174.7 394.9,174.1 397.7,171.2 400.5,166.4 403.3,163.0 406.1,163.2 408.8,160.1 411.6,157.5 414.4,159.1 417.2,162.4 420.0,170.4 422.8,172.8 425.6,174.6 428.3,178.6 431.1,174.6 433.9,169.9 436.7,168.8 439.5,162.0 442.3,160.2 445.0,145.1 447.8,133.4 450.6,129.1 453.4,120.0 456.2,119.5 459.0,118.6 461.8,112.6 464.5,105.4 467.3,89.1 470.1,81.2 472.9,72.5 475.7,69.7 478.5,71.0 481.2,75.0 484.0,74.5 486.8,72.3 489.6,76.3 492.4,81.0 495.2,76.5 497.9,73.5 500.7,78.3 503.5,82.2 506.3,82.1 509.1,80.7 511.9,85.6 514.7,83.5 517.4,82.6 520.2,79.7 523.0,77.9 525.8,73.8 528.6,71.9 531.4,73.1 534.1,74.2 536.9,71.8 539.7,71.3 542.5,65.4 545.3,62.7 548.1,58.9 550.9,57.8 553.6,56.5 556.4,58.2 559.2,64.9 562.0,63.7 564.8,60.2 567.6,56.3 570.3,55.1 573.1,57.9 575.9,57.8 578.7,60.2 581.5,66.3 584.3,67.1 587.1,67.2 589.8,60.4 592.6,57.3 595.4,54.3 598.2,49.7 601.0,50.8 603.8,59.3 606.5,61.7 609.3,60.0 612.1,58.4 614.9,58.5 617.7,55.1 620.5,56.5 623.2,57.8 626.0,57.7 628.8,58.7 631.6,58.8 634.4,55.2 637.2,54.0 640.0,57.0 642.7,60.5 645.5,60.9 648.3,59.9 651.1,61.7 653.9,63.2 656.7,59.6 659.4,58.9 662.2,58.4 665.0,57.8 667.8,56.6 670.6,56.6 673.4,55.4 676.2,54.7 678.9,54.0 681.7,49.7 684.5,40.0 687.3,37.6 690.1,37.2 692.9,35.5 695.6,33.2 698.4,38.2 701.2,37.1 704.0,37.1 704.0,115.8 701.2,115.6 698.4,115.2 695.6,109.7 692.9,110.1 690.1,109.1 687.3,107.6 684.5,109.5 681.7,120.1 678.9,124.2 676.2,124.7 673.4,125.7 670.6,129.3 667.8,128.2 665.0,128.5 662.2,129.2 659.4,130.3 656.7,132.0 653.9,134.0 651.1,131.0 648.3,129.8 645.5,129.8 642.7,129.1 640.0,125.1 637.2,125.0 634.4,126.8 631.6,129.0 628.8,129.5 626.0,127.8 623.2,127.1 620.5,126.8 617.7,127.8 614.9,131.2 612.1,134.0 609.3,135.9 606.5,137.1 603.8,134.4 601.0,130.4 598.2,130.0 595.4,131.7 592.6,132.5 589.8,133.1 587.1,138.8 584.3,140.4 581.5,140.1 578.7,132.5 575.9,130.4 573.1,131.1 570.3,127.6 567.6,130.7 564.8,133.9 562.0,137.2 559.2,138.8 556.4,131.2 553.6,129.8 550.9,131.8 548.1,132.8 545.3,137.4 542.5,139.5 539.7,143.5 536.9,142.7 534.1,137.5 531.4,132.6 528.6,130.8 525.8,133.0 523.0,137.4 520.2,139.6 517.4,143.1 514.7,144.3 511.9,145.7 509.1,145.5 506.3,148.8 503.5,146.6 500.7,143.0 497.9,140.2 495.2,140.6 492.4,144.2 489.6,140.6 486.8,135.4 484.0,139.4 481.2,147.3 478.5,150.8 475.7,152.9 472.9,154.4 470.1,157.5 467.3,163.1 464.5,168.2 461.8,170.4 459.0,175.2 456.2,175.7 453.4,175.5 450.6,181.8 447.8,186.7 445.0,190.9 442.3,198.5 439.5,197.7 436.7,204.0 433.9,203.0 431.1,205.8 428.3,208.9 425.6,209.2 422.8,209.8 420.0,210.5 417.2,205.7 414.4,204.3 411.6,202.2 408.8,204.7 406.1,205.1 403.3,200.1 400.5,200.5 397.7,206.6 394.9,211.6 392.1,212.9 389.4,208.2 386.6,207.9 383.8,214.8 381.0,216.5 378.2,223.1 375.4,230.2 372.6,233.3 369.9,232.1 367.1,230.2 364.3,227.1 361.5,223.6 358.7,227.0 355.9,226.7 353.2,230.4 350.4,235.5 347.6,240.8 344.8,238.7 342.0,237.2 339.2,236.2 336.4,230.1 333.7,235.5 330.9,231.4 328.1,229.8 325.3,229.1 322.5,226.8 319.7,229.4 317.0,230.9 314.2,232.1 311.4,229.7 308.6,229.4 305.8,223.9 303.0,222.5 300.2,224.3 297.5,226.0 294.7,226.1 291.9,225.6 289.1,227.5 286.3,229.6 283.5,228.3 280.8,229.1 278.0,230.0 275.2,230.7 272.4,229.4 269.6,230.2 266.8,232.5 264.1,232.8 261.3,233.6 258.5,237.1 255.7,240.4 252.9,241.2 250.1,240.8 247.3,241.3 244.6,240.8 241.8,243.6 239.0,243.1 236.2,244.2 233.4,240.0 230.6,243.8 227.9,246.8 225.1,246.3 222.3,247.6 219.5,246.7 216.7,252.5 213.9,254.7 211.1,256.2 208.4,257.3 205.6,256.3 202.8,256.5 200.0,258.6 197.2,259.6 194.4,256.5 191.7,260.8 188.9,263.1 186.1,265.2 183.3,263.8 180.5,264.9 177.7,260.4 174.9,259.1 172.2,255.2 169.4,249.9 166.6,241.7 163.8,243.5 161.0,249.1 158.2,255.1 155.5,257.4 152.7,256.2 149.9,257.1 147.1,251.1 144.3,251.2 141.5,246.9 138.8,246.7 136.0,246.2 133.2,248.3 130.4,251.1 127.6,251.9 124.8,253.3 122.0,253.3 119.3,253.0 116.5,252.7 113.7,252.9 110.9,250.7 108.1,251.5 105.3,250.3 102.6,250.2 99.8,247.9 97.0,241.3 94.2,237.5 91.4,237.5 88.6,236.8 85.8,234.5 83.1,234.0 80.3,235.4 77.5,236.7 74.7,238.9 71.9,236.7 69.1,237.8 66.4,241.1 63.6,239.8 60.8,237.8 58.0,239.9"/>
+<polyline class="ser-base" points="58.0,239.9 60.8,237.8 63.6,239.8 66.4,241.1 69.1,237.8 71.9,236.7 74.7,238.9 77.5,236.7 80.3,235.4 83.1,234.0 85.8,234.5 88.6,236.8 91.4,237.5 94.2,237.5 97.0,241.3 99.8,247.9 102.6,250.2 105.3,250.3 108.1,251.5 110.9,250.7 113.7,252.9 116.5,252.7 119.3,253.0 122.0,253.3 124.8,253.3 127.6,251.9 130.4,251.1 133.2,248.3 136.0,246.2 138.8,246.7 141.5,246.9 144.3,251.2 147.1,251.1 149.9,257.1 152.7,256.2 155.5,257.4 158.2,255.1 161.0,249.1 163.8,243.5 166.6,241.7 169.4,249.9 172.2,255.2 174.9,259.1 177.7,260.4 180.5,264.9 183.3,263.8 186.1,265.2 188.9,263.1 191.7,260.8 194.4,256.5 197.2,259.6 200.0,258.6 202.8,256.5 205.6,256.3 208.4,257.3 211.1,256.2 213.9,254.7 216.7,252.5 219.5,246.7 222.3,247.6 225.1,246.3 227.9,246.8 230.6,243.8 233.4,240.0 236.2,244.2 239.0,243.1 241.8,243.6 244.6,240.8 247.3,241.3 250.1,240.8 252.9,241.2 255.7,240.4 258.5,237.1 261.3,233.6 264.1,232.8 266.8,232.5 269.6,230.2 272.4,229.4 275.2,230.7 278.0,230.0 280.8,229.1 283.5,228.3 286.3,229.6 289.1,227.5 291.9,225.6 294.7,226.1 297.5,226.0 300.2,224.3 303.0,222.5 305.8,223.9 308.6,229.4 311.4,229.7 314.2,232.1 317.0,230.9 319.7,229.4 322.5,226.8 325.3,229.1 328.1,229.8 330.9,231.4 333.7,235.5 336.4,230.1 339.2,236.2 342.0,237.2 344.8,238.7 347.6,240.8 350.4,235.5 353.2,230.4 355.9,226.7 358.7,227.0 361.5,223.6 364.3,227.1 367.1,230.2 369.9,232.1 372.6,233.3 375.4,230.2 378.2,223.1 381.0,216.5 383.8,214.8 386.6,207.9 389.4,208.2 392.1,212.9 394.9,211.6 397.7,206.6 400.5,200.5 403.3,200.1 406.1,205.1 408.8,204.7 411.6,202.2 414.4,204.3 417.2,205.7 420.0,210.5 422.8,209.8 425.6,209.2 428.3,208.9 431.1,205.8 433.9,203.0 436.7,204.0 439.5,197.7 442.3,198.5 445.0,190.9 447.8,186.7 450.6,181.8 453.4,175.5 456.2,175.7 459.0,175.2 461.8,170.4 464.5,168.2 467.3,163.1 470.1,157.5 472.9,154.4 475.7,152.9 478.5,150.8 481.2,147.3 484.0,139.4 486.8,135.4 489.6,140.6 492.4,144.2 495.2,140.6 497.9,140.2 500.7,143.0 503.5,146.6 506.3,148.8 509.1,145.5 511.9,145.7 514.7,144.3 517.4,143.1 520.2,139.6 523.0,137.4 525.8,133.0 528.6,130.8 531.4,132.6 534.1,137.5 536.9,142.7 539.7,143.5 542.5,139.5 545.3,137.4 548.1,132.8 550.9,131.8 553.6,129.8 556.4,131.2 559.2,138.8 562.0,137.2 564.8,133.9 567.6,130.7 570.3,127.6 573.1,131.1 575.9,130.4 578.7,132.5 581.5,140.1 584.3,140.4 587.1,138.8 589.8,133.1 592.6,132.5 595.4,131.7 598.2,130.0 601.0,130.4 603.8,134.4 606.5,137.1 609.3,135.9 612.1,134.0 614.9,131.2 617.7,127.8 620.5,126.8 623.2,127.1 626.0,127.8 628.8,129.5 631.6,129.0 634.4,126.8 637.2,125.0 640.0,125.1 642.7,129.1 645.5,129.8 648.3,129.8 651.1,131.0 653.9,134.0 656.7,132.0 659.4,130.3 662.2,129.2 665.0,128.5 667.8,128.2 670.6,129.3 673.4,125.7 676.2,124.7 678.9,124.2 681.7,120.1 684.5,109.5 687.3,107.6 690.1,109.1 692.9,110.1 695.6,109.7 698.4,115.2 701.2,115.6 704.0,115.8"/>
+<polyline class="ser-v2" points="58.0,240.3 60.8,238.2 63.6,237.8 66.4,239.3 69.1,235.8 71.9,232.4 74.7,230.4 77.5,220.5 80.3,217.0 83.1,214.6 85.8,213.1 88.6,219.4 91.4,227.4 94.2,230.1 97.0,231.4 99.8,237.3 102.6,240.8 105.3,241.8 108.1,244.7 110.9,244.3 113.7,243.5 116.5,241.3 119.3,240.7 122.0,240.4 124.8,239.1 127.6,236.8 130.4,235.1 133.2,232.5 136.0,230.7 138.8,231.3 141.5,233.3 144.3,236.3 147.1,235.8 149.9,241.9 152.7,241.8 155.5,244.2 158.2,241.5 161.0,235.7 163.8,229.9 166.6,227.4 169.4,236.4 172.2,243.0 174.9,243.1 177.7,243.8 180.5,247.3 183.3,246.1 186.1,246.6 188.9,245.8 191.7,243.0 194.4,239.7 197.2,239.7 200.0,235.4 202.8,234.1 205.6,233.9 208.4,233.7 211.1,232.8 213.9,230.7 216.7,228.2 219.5,222.8 222.3,224.0 225.1,222.6 227.9,223.6 230.6,221.1 233.4,216.7 236.2,220.8 239.0,219.7 241.8,220.1 244.6,217.7 247.3,215.7 250.1,214.4 252.9,215.2 255.7,214.6 258.5,213.0 261.3,210.6 264.1,208.2 266.8,207.8 269.6,202.8 272.4,201.4 275.2,202.5 278.0,202.3 280.8,200.9 283.5,199.3 286.3,198.9 289.1,195.1 291.9,193.1 294.7,190.4 297.5,188.7 300.2,187.6 303.0,183.8 305.8,183.6 308.6,183.3 311.4,182.5 314.2,185.3 317.0,184.7 319.7,185.8 322.5,183.3 325.3,185.2 328.1,185.7 330.9,186.2 333.7,186.5 336.4,182.6 339.2,187.2 342.0,188.6 344.8,186.2 347.6,188.7 350.4,182.9 353.2,178.3 355.9,172.9 358.7,175.8 361.5,174.5 364.3,180.7 367.1,185.0 369.9,189.1 372.6,192.7 375.4,189.2 378.2,182.0 381.0,173.7 383.8,173.2 386.6,166.9 389.4,165.5 392.1,174.7 394.9,174.1 397.7,171.2 400.5,166.4 403.3,163.0 406.1,163.2 408.8,160.1 411.6,157.5 414.4,159.1 417.2,162.4 420.0,170.4 422.8,172.8 425.6,174.6 428.3,178.6 431.1,174.6 433.9,169.9 436.7,168.8 439.5,162.0 442.3,160.2 445.0,145.1 447.8,133.4 450.6,129.1 453.4,120.0 456.2,119.5 459.0,118.6 461.8,112.6 464.5,105.4 467.3,89.1 470.1,81.2 472.9,72.5 475.7,69.7 478.5,71.0 481.2,75.0 484.0,74.5 486.8,72.3 489.6,76.3 492.4,81.0 495.2,76.5 497.9,73.5 500.7,78.3 503.5,82.2 506.3,82.1 509.1,80.7 511.9,85.6 514.7,83.5 517.4,82.6 520.2,79.7 523.0,77.9 525.8,73.8 528.6,71.9 531.4,73.1 534.1,74.2 536.9,71.8 539.7,71.3 542.5,65.4 545.3,62.7 548.1,58.9 550.9,57.8 553.6,56.5 556.4,58.2 559.2,64.9 562.0,63.7 564.8,60.2 567.6,56.3 570.3,55.1 573.1,57.9 575.9,57.8 578.7,60.2 581.5,66.3 584.3,67.1 587.1,67.2 589.8,60.4 592.6,57.3 595.4,54.3 598.2,49.7 601.0,50.8 603.8,59.3 606.5,61.7 609.3,60.0 612.1,58.4 614.9,58.5 617.7,55.1 620.5,56.5 623.2,57.8 626.0,57.7 628.8,58.7 631.6,58.8 634.4,55.2 637.2,54.0 640.0,57.0 642.7,60.5 645.5,60.9 648.3,59.9 651.1,61.7 653.9,63.2 656.7,59.6 659.4,58.9 662.2,58.4 665.0,57.8 667.8,56.6 670.6,56.6 673.4,55.4 676.2,54.7 678.9,54.0 681.7,49.7 684.5,40.0 687.3,37.6 690.1,37.2 692.9,35.5 695.6,33.2 698.4,38.2 701.2,37.1 704.0,37.1"/>
+<line class="sep" x1="381.0" x2="381.0" y1="26" y2="270"/><text class="note" x="219.5" y="32" text-anchor="middle">first half, +11.2 bp a week at equal risk</text><text class="note" x="542.5" y="32" text-anchor="middle">second half, +4.6 bp a week at equal risk</text>
+<line class="ser-v2" x1="70" x2="92" y1="62" y2="62"/><text class="lab-v2" x="100" y="66">v2, 20.7% a year</text><line class="ser-base" x1="70" x2="92" y1="82" y2="82"/><text class="lab-base" x="100" y="86">honest baseline, 12.2% a year</text>
+<text class="note" x="58" y="332">one times gross, netted costs, 233 weeks from March 2022 to September 2026</text>
+</svg>
+<!--/fig3-->
+<figcaption><b>Figure 3.</b> Cumulative growth of v2 and the honest baseline, both at one times
+gross with netted costs, on a log scale. The shaded band is the gap. It widens most in 2023 and
+again in 2025, and the two books move together in between, with a correlation of 0.79 between
+their weekly returns. At equal volatility v2 gains 11.2 basis points a week in the first half and 4.6 in the
+second, so the effect is present throughout and smaller recently.</figcaption>
+</figure>
+
+<h3>Where the profit comes from</h3>
+
+<p>A natural first look splits v2's profit by the age of the coin when each leg opened and by the
+side of the leg. Taken raw, that split credits almost everything to the short side. It is
+misleading, because the alt market fell over much of the sample and young coins are shorted far
+more often than they are bought, so a short leg earns the market's fall whether or not the ranking
+was right. Charging every leg for its beta to the equal weighted alt market over the same days
+removes that, and the picture changes shape.</p>
+
+<figure>
+<!--fig4-->
+<svg viewBox="0 0 720 510" class="fig" role="img" aria-label="Contribution to version two's weekly return by the age of the coin and the side of the leg, raw and after removing each leg's exposure to the alt market. After the adjustment the short legs in coins younger than six months and the long legs in coins older than two years carry the profit.">
+<defs><marker id="age-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="age-head" d="M0,0 L8,4 L0,8 z"/></marker></defs>
+<circle class="age-raw" cx="202" cy="24" r="4.5"/><text class="note" x="212" y="28">raw</text><circle class="age-adj" cx="258" cy="24" r="4.5"/><text class="note" x="268" y="28">less beta times the alt market</text><text class="note" x="202" y="46">the arrow is the part the market's move explains</text><text class="colhead" x="614" y="46" text-anchor="end">raw</text><text class="colhead" x="704" y="46" text-anchor="end">adjusted</text>
+<text class="grp" x="8" y="88">60 to 180 days</text>
+<rect class="age-band" x="0" y="62" width="720" height="158"/><text class="age-tag" x="554.0" y="78" text-anchor="end">kept out by the one year rule</text>
+<text class="grp" x="8" y="166">180 to 365 days</text>
+<text class="grp" x="8" y="244">1 to 2 years</text>
+<text class="grp" x="8" y="322">over 2 years</text>
+<line class="grid" x1="196.0" x2="196.0" y1="62" y2="386"/><text class="tick" x="196.0" y="402" text-anchor="middle">&#8722;10</text>
+<line class="grid" x1="240.8" x2="240.8" y1="62" y2="386"/><text class="tick" x="240.8" y="402" text-anchor="middle">&#8722;5</text>
+<line class="axis" x1="285.5" x2="285.5" y1="62" y2="386"/><text class="tick" x="285.5" y="402" text-anchor="middle">0</text>
+<line class="grid" x1="330.2" x2="330.2" y1="62" y2="386"/><text class="tick" x="330.2" y="402" text-anchor="middle">+5</text>
+<line class="grid" x1="375.0" x2="375.0" y1="62" y2="386"/><text class="tick" x="375.0" y="402" text-anchor="middle">+10</text>
+<line class="grid" x1="419.8" x2="419.8" y1="62" y2="386"/><text class="tick" x="419.8" y="402" text-anchor="middle">+15</text>
+<line class="grid" x1="464.5" x2="464.5" y1="62" y2="386"/><text class="tick" x="464.5" y="402" text-anchor="middle">+20</text>
+<line class="grid" x1="509.2" x2="509.2" y1="62" y2="386"/><text class="tick" x="509.2" y="402" text-anchor="middle">+25</text>
+<line class="grid" x1="554.0" x2="554.0" y1="62" y2="386"/><text class="tick" x="554.0" y="402" text-anchor="middle">+30</text>
+<g><title>short legs in coins 60 to 180, 4,467 legs. Raw +12.2, adjusted +4.6 bp a week</title><text class="lab" x="184" y="104" text-anchor="end">short, 4,467 legs</text>
+<line class="age-move" x1="389.9" x2="332.5" y1="100" y2="100" marker-end="url(#age-arrow)"/>
+<circle class="age-raw" cx="394.9" cy="100" r="4.5"/><circle class="age-adj young" cx="326.5" cy="100" r="5"/><text class="tick" x="614" y="104" text-anchor="end">+12.2</text><text class="val young" x="704" y="104" text-anchor="end">+4.6</text></g>
+<g><title>long legs in coins 60 to 180, 1,252 legs. Raw &#8722;2.5, adjusted &#8722;0.7 bp a week</title><text class="lab" x="184" y="128" text-anchor="end">long, 1,252 legs</text>
+<line class="age-move" x1="268.6" x2="273.3" y1="124" y2="124" marker-end="url(#age-arrow)"/>
+<circle class="age-raw" cx="263.6" cy="124" r="4.5"/><circle class="age-adj" cx="279.3" cy="124" r="5"/><text class="tick" x="614" y="128" text-anchor="end">&#8722;2.5</text><text class="val" x="704" y="128" text-anchor="end">&#8722;0.7</text></g>
+<g><title>short legs in coins 180 to 365, 4,499 legs. Raw &#8722;0.5, adjusted 0.0 bp a week</title><text class="lab" x="184" y="182" text-anchor="end">short, 4,499 legs</text>
+<circle class="age-raw" cx="280.8" cy="178" r="4.5"/><circle class="age-adj" cx="285.5" cy="178" r="5"/><text class="tick" x="614" y="182" text-anchor="end">&#8722;0.5</text><text class="val" x="704" y="182" text-anchor="end">0.0</text></g>
+<g><title>long legs in coins 180 to 365, 1,922 legs. Raw +1.8, adjusted +0.4 bp a week</title><text class="lab" x="184" y="206" text-anchor="end">long, 1,922 legs</text>
+<line class="age-move" x1="296.5" x2="294.7" y1="202" y2="202" marker-end="url(#age-arrow)"/>
+<circle class="age-raw" cx="301.5" cy="202" r="4.5"/><circle class="age-adj" cx="288.7" cy="202" r="5"/><text class="tick" x="614" y="206" text-anchor="end">+1.8</text><text class="val" x="704" y="206" text-anchor="end">+0.4</text></g>
+<g><title>short legs in coins 1 to 2 years, 7,722 legs. Raw +16.2, adjusted &#8722;4.8 bp a week</title><text class="lab" x="184" y="260" text-anchor="end">short, 7,722 legs</text>
+<line class="age-move" x1="425.5" x2="248.3" y1="256" y2="256" marker-end="url(#age-arrow)"/>
+<circle class="age-raw" cx="430.5" cy="256" r="4.5"/><circle class="age-adj" cx="242.3" cy="256" r="5"/><text class="tick" x="614" y="260" text-anchor="end">+16.2</text><text class="val" x="704" y="260" text-anchor="end">&#8722;4.8</text></g>
+<g><title>long legs in coins 1 to 2 years, 4,135 legs. Raw &#8722;5.1, adjusted +2.8 bp a week</title><text class="lab" x="184" y="284" text-anchor="end">long, 4,135 legs</text>
+<line class="age-move" x1="244.7" x2="304.9" y1="280" y2="280" marker-end="url(#age-arrow)"/>
+<circle class="age-raw" cx="239.7" cy="280" r="4.5"/><circle class="age-adj" cx="310.9" cy="280" r="5"/><text class="tick" x="614" y="284" text-anchor="end">&#8722;5.1</text><text class="val" x="704" y="284" text-anchor="end">+2.8</text></g>
+<g><title>short legs in coins over 2 years, 21,057 legs. Raw +10.1, adjusted &#8722;2.8 bp a week</title><text class="lab" x="184" y="338" text-anchor="end">short, 21,057 legs</text>
+<line class="age-move" x1="371.3" x2="266.4" y1="334" y2="334" marker-end="url(#age-arrow)"/>
+<circle class="age-raw" cx="376.3" cy="334" r="4.5"/><circle class="age-adj" cx="260.4" cy="334" r="5"/><text class="tick" x="614" y="338" text-anchor="end">+10.1</text><text class="val" x="704" y="338" text-anchor="end">&#8722;2.8</text></g>
+<g><title>long legs in coins over 2 years, 30,436 legs. Raw +0.9, adjusted +24.2 bp a week</title><text class="lab" x="184" y="362" text-anchor="end">long, 30,436 legs</text>
+<line class="age-move" x1="298.9" x2="496.1" y1="358" y2="358" marker-end="url(#age-arrow)"/>
+<circle class="age-raw" cx="293.9" cy="358" r="4.5"/><circle class="age-adj" cx="502.1" cy="358" r="5"/><text class="tick" x="614" y="362" text-anchor="end">+0.9</text><text class="val" x="704" y="362" text-anchor="end">+24.2</text></g>
+<line class="axis" x1="8" x2="704" y1="434" y2="434"/><text class="lab-strong" x="8" y="454">whole book</text><text class="note" x="8" y="498">the arrows add up to +9.6 bp a week, the part of the raw return that the alt market's move explains</text><text class="tick" x="614" y="454" text-anchor="end">+33.2</text><text class="val" x="704" y="454" text-anchor="end">+23.7</text><text class="lab-strong" x="8" y="476">coins under a year old</text><text class="tick" x="614" y="476" text-anchor="end">+11.0</text><text class="val young" x="704" y="476" text-anchor="end">+4.2</text>
+<text class="axlab" x="375.0" y="420" text-anchor="middle">basis points a week of book capital, one times gross</text>
+</svg>
+<!--/fig4-->
+<figcaption><b>Figure 4.</b> Contribution to v2's weekly return by the coin's age when the leg
+opened, in basis points of book capital at one times gross with costs per leg. Hollow points are
+raw. Solid points subtract each leg's trailing beta times the alt market's return over its holding
+period, so each arrow is the part of the raw figure that the market's move explains, 9.6 basis
+points a week across the book. Taken raw, the short side looks like the whole story. Adjusted, two
+places carry the profit, the long side in coins older than two years and, in amber, the short side
+in coins between sixty days and six months old. The shaded rows are the coins the one year rule
+kept out of the book, worth 4.2 basis points a week together after adjustment. The adjustment uses
+a sixty-day beta and ignores stops on the market term, so it is an approximation.</figcaption>
+</figure>
+
+<p>The amber point is worth about 4.6 basis points a week after adjustment, roughly a fifth of v2's
+market-adjusted return, from 4,467 short legs in coins less than six months old. Crypto returns
+are known to load on size and momentum,<sup>11</sup> and neither explains why the youngest coins
+should be the profitable shorts. Equity markets offer a closer analogy. Newly listed firms
+underperform comparable ones for years after their offering,<sup>12,13</sup> and prices dip when
+lock-up periods end and insiders become free to sell.<sup>14</sup> A token's early months combine
+both, with heavy attention at listing and a supply schedule that keeps releasing locked coins to
+early holders.<sup>15</sup> Nothing in the model knows about supply, so whatever it captures here
+it captures through price and volume alone.</p>
+
+<p class="pull">A one year history rule removed exactly the part of the market where the short
+side had the most work to do.</p>
+
+<h3>Why adopt something that fails its own test</h3>
+
+<p>Against the honest baseline, v2's gain at equal volatility is 7.9 basis points a week at a
+<i>t</i> statistic of 1.12. The registered rule asks for two. The deflated Sharpe ratio, which
+estimates the probability that the true Sharpe ratio is above zero after choosing the best of 61
+trials, is 0.89 for v2 against 0.60 for the baseline.<sup>4</sup> The evidence that v2 is better
+than the baseline is weak. The evidence that it is a real book at all is reasonably strong.</p>
+
+<p>Three things tipped the decision. The dose-response in the table above is orderly. The gain is
+positive in both halves. And the cost of being wrong is limited by construction. v2's weekly returns
+correlate at 0.79 with the baseline's, so if the young-coin effect is noise, v2 degrades towards
+the baseline rather than towards zero. Under a mandate that explicitly trades
+more risk for more profit, a change with a bounded downside and a plausible mechanism is worth
+running in parallel, where live data can confirm or retire it.</p>
+</section>
+
+<section class="part">
+<div class="num"><b>4</b><span>Leverage</span></div>
+<h2>Two times, and the limits that go with it</h2>
+
+<p class="lede">A market-neutral book with a Sharpe ratio near 1.7 at one times gross is a
+candidate for leverage almost by definition. How much depends less on the backtest's average than
+on how much of that average survives contact with live markets, which nobody knows in advance.</p>
+
+<p>Three year paths were drawn by block bootstrap from v2's 233 weekly returns, in blocks of eight
+weeks to keep the clustering of bad weeks, and 5,000 paths per setting.<sup>16</sup> Four
+assumptions were run about the edge, from the full backtest mean down to none of it, by shifting
+the weekly returns before resampling. The risk budget, fixed before any of this, is at most a ten
+percent chance of a drawdown deeper than half the capital within three years, at half the
+backtest edge.</p>
+
+<figure>
+<!--fig5-->
+<svg viewBox="0 0 720 570" class="fig" role="img" aria-label="Two panels. Above, median wealth after three years against gross leverage for four assumptions about the edge. Below, the chance of a drawdown deeper than half the capital, with the ten percent budget marked. At half the edge, two times stays inside the budget and three times does not.">
+<line class="grid" x1="58" x2="610" y1="262.0" y2="262.0"/><text class="tick" x="49" y="266.0" text-anchor="end">0.6&#215;</text>
+<line class="axis" x1="58" x2="610" y1="219.0" y2="219.0"/><text class="tick" x="49" y="223.0" text-anchor="end">1&#215;</text>
+<line class="grid" x1="58" x2="610" y1="184.9" y2="184.9"/><text class="tick" x="49" y="188.9" text-anchor="end">1.5&#215;</text>
+<line class="grid" x1="58" x2="610" y1="160.7" y2="160.7"/><text class="tick" x="49" y="164.7" text-anchor="end">2&#215;</text>
+<line class="grid" x1="58" x2="610" y1="126.5" y2="126.5"/><text class="tick" x="49" y="130.5" text-anchor="end">3&#215;</text>
+<line class="grid" x1="58" x2="610" y1="83.6" y2="83.6"/><text class="tick" x="49" y="87.6" text-anchor="end">5&#215;</text>
+<line class="grid" x1="58" x2="610" y1="44.0" y2="44.0"/><text class="tick" x="49" y="48.0" text-anchor="end">8&#215;</text>
+<line class="axis" x1="58" x2="610" y1="510.0" y2="510.0"/><text class="tick" x="49" y="514.0" text-anchor="end">0%</text>
+<line class="grid" x1="58" x2="610" y1="464.5" y2="464.5"/><text class="tick" x="49" y="468.5" text-anchor="end">25%</text>
+<line class="grid" x1="58" x2="610" y1="419.0" y2="419.0"/><text class="tick" x="49" y="423.0" text-anchor="end">50%</text>
+<line class="grid" x1="58" x2="610" y1="373.5" y2="373.5"/><text class="tick" x="49" y="377.5" text-anchor="end">75%</text>
+<line class="grid" x1="58" x2="610" y1="328.0" y2="328.0"/><text class="tick" x="49" y="332.0" text-anchor="end">100%</text>
+<rect class="budget" x="58" y="328.0" width="552" height="163.8"/><line class="budget-line" x1="58" x2="610" y1="491.8" y2="491.8"/><text class="note" x="66" y="346.0">shaded, outside the risk budget of 10%</text>
+<line class="chosen" x1="242.0" x2="242.0" y1="36" y2="510"/><text class="lab-v2" x="248.0" y="254">chosen, 2&#215;</text>
+<text class="tick" x="58.0" y="528" text-anchor="middle">1&#215;</text>
+<text class="tick" x="150.0" y="528" text-anchor="middle">1.5&#215;</text>
+<text class="tick" x="242.0" y="528" text-anchor="middle">2&#215;</text>
+<text class="tick" x="334.0" y="528" text-anchor="middle">2.5&#215;</text>
+<text class="tick" x="426.0" y="528" text-anchor="middle">3&#215;</text>
+<text class="tick" x="518.0" y="528" text-anchor="middle">3.5&#215;</text>
+<text class="tick" x="610.0" y="528" text-anchor="middle">4&#215;</text>
+<text class="axlab" x="334.0" y="550" text-anchor="middle">gross leverage</text><text class="axlab" x="58" y="20">median wealth after three years</text><text class="axlab" x="58" y="312">chance of a drawdown deeper than 50% within three years</text>
+<polyline class="lev e100" points="58.0,172.8 150.0,150.8 242.0,129.6 334.0,109.2 426.0,89.7 518.0,71.0 610.0,52.8"/><polyline class="lev e100" points="58.0,510.0 150.0,510.0 242.0,508.6 334.0,505.2 426.0,498.1 518.0,485.8 610.0,468.0"/>
+<circle class="lev-pt e100" cx="58.0" cy="172.8" r="3.6"><title>full edge, 1x: median 1.73x, P(drawdown over 50%) 0.0%</title></circle>
+<circle class="lev-pt e100" cx="58.0" cy="510.0" r="3.6"><title>full edge, 1x: median 1.73x, P(drawdown over 50%) 0.0%</title></circle>
+<circle class="lev-pt e100" cx="150.0" cy="150.8" r="3.6"><title>full edge, 1.5x: median 2.25x, P(drawdown over 50%) 0.0%</title></circle>
+<circle class="lev-pt e100" cx="150.0" cy="510.0" r="3.6"><title>full edge, 1.5x: median 2.25x, P(drawdown over 50%) 0.0%</title></circle>
+<circle class="lev-pt e100" cx="242.0" cy="129.6" r="3.6"><title>full edge, 2x: median 2.89x, P(drawdown over 50%) 0.8%</title></circle>
+<circle class="lev-pt e100" cx="242.0" cy="508.6" r="3.6"><title>full edge, 2x: median 2.89x, P(drawdown over 50%) 0.8%</title></circle>
+<circle class="lev-pt e100" cx="334.0" cy="109.2" r="3.6"><title>full edge, 2.5x: median 3.68x, P(drawdown over 50%) 2.6%</title></circle>
+<circle class="lev-pt e100" cx="334.0" cy="505.2" r="3.6"><title>full edge, 2.5x: median 3.68x, P(drawdown over 50%) 2.6%</title></circle>
+<circle class="lev-pt e100" cx="426.0" cy="89.7" r="3.6"><title>full edge, 3x: median 4.65x, P(drawdown over 50%) 6.5%</title></circle>
+<circle class="lev-pt e100" cx="426.0" cy="498.1" r="3.6"><title>full edge, 3x: median 4.65x, P(drawdown over 50%) 6.5%</title></circle>
+<circle class="lev-pt e100 over" cx="518.0" cy="71.0" r="3.6"><title>full edge, 3.5x: median 5.81x, P(drawdown over 50%) 13.3%</title></circle>
+<circle class="lev-pt e100 over" cx="518.0" cy="485.8" r="3.6"><title>full edge, 3.5x: median 5.81x, P(drawdown over 50%) 13.3%</title></circle>
+<circle class="lev-pt e100 over" cx="610.0" cy="52.8" r="3.6"><title>full edge, 4x: median 7.21x, P(drawdown over 50%) 23.1%</title></circle>
+<circle class="lev-pt e100 over" cx="610.0" cy="468.0" r="3.6"><title>full edge, 4x: median 7.21x, P(drawdown over 50%) 23.1%</title></circle>
+<text class="lev-lab e100" x="618" y="56.8">full edge</text>
+<polyline class="lev e50" points="58.0,197.3 150.0,187.6 242.0,178.6 334.0,170.5 426.0,163.1 518.0,156.6 610.0,150.5"/><polyline class="lev e50" points="58.0,510.0 150.0,507.6 242.0,498.9 334.0,481.7 426.0,458.3 518.0,431.5 610.0,407.3"/>
+<circle class="lev-pt e50" cx="58.0" cy="197.3" r="3.6"><title>half, 1x: median 1.29x, P(drawdown over 50%) 0.0%</title></circle>
+<circle class="lev-pt e50" cx="58.0" cy="510.0" r="3.6"><title>half, 1x: median 1.29x, P(drawdown over 50%) 0.0%</title></circle>
+<circle class="lev-pt e50" cx="150.0" cy="187.6" r="3.6"><title>half, 1.5x: median 1.45x, P(drawdown over 50%) 1.3%</title></circle>
+<circle class="lev-pt e50" cx="150.0" cy="507.6" r="3.6"><title>half, 1.5x: median 1.45x, P(drawdown over 50%) 1.3%</title></circle>
+<circle class="lev-pt e50" cx="242.0" cy="178.6" r="3.6"><title>half, 2x: median 1.62x, P(drawdown over 50%) 6.1%</title></circle>
+<circle class="lev-pt e50" cx="242.0" cy="498.9" r="3.6"><title>half, 2x: median 1.62x, P(drawdown over 50%) 6.1%</title></circle>
+<circle class="lev-pt e50 over" cx="334.0" cy="170.5" r="3.6"><title>half, 2.5x: median 1.78x, P(drawdown over 50%) 15.6%</title></circle>
+<circle class="lev-pt e50 over" cx="334.0" cy="481.7" r="3.6"><title>half, 2.5x: median 1.78x, P(drawdown over 50%) 15.6%</title></circle>
+<circle class="lev-pt e50 over" cx="426.0" cy="163.1" r="3.6"><title>half, 3x: median 1.94x, P(drawdown over 50%) 28.4%</title></circle>
+<circle class="lev-pt e50 over" cx="426.0" cy="458.3" r="3.6"><title>half, 3x: median 1.94x, P(drawdown over 50%) 28.4%</title></circle>
+<circle class="lev-pt e50 over" cx="518.0" cy="156.6" r="3.6"><title>half, 3.5x: median 2.10x, P(drawdown over 50%) 43.1%</title></circle>
+<circle class="lev-pt e50 over" cx="518.0" cy="431.5" r="3.6"><title>half, 3.5x: median 2.10x, P(drawdown over 50%) 43.1%</title></circle>
+<circle class="lev-pt e50 over" cx="610.0" cy="150.5" r="3.6"><title>half, 4x: median 2.26x, P(drawdown over 50%) 56.4%</title></circle>
+<circle class="lev-pt e50 over" cx="610.0" cy="407.3" r="3.6"><title>half, 4x: median 2.26x, P(drawdown over 50%) 56.4%</title></circle>
+<text class="lev-lab e50" x="618" y="154.5">half</text>
+<polyline class="lev e25" points="58.0,209.6 150.0,206.1 242.0,203.2 334.0,201.2 426.0,200.0 518.0,199.6 610.0,199.7"/><polyline class="lev e25" points="58.0,509.6 150.0,502.3 242.0,481.8 334.0,452.9 426.0,423.0 518.0,396.4 610.0,376.2"/>
+<circle class="lev-pt e25" cx="58.0" cy="209.6" r="3.6"><title>quarter, 1x: median 1.12x, P(drawdown over 50%) 0.2%</title></circle>
+<circle class="lev-pt e25" cx="58.0" cy="509.6" r="3.6"><title>quarter, 1x: median 1.12x, P(drawdown over 50%) 0.2%</title></circle>
+<circle class="lev-pt e25" cx="150.0" cy="206.1" r="3.6"><title>quarter, 1.5x: median 1.17x, P(drawdown over 50%) 4.2%</title></circle>
+<circle class="lev-pt e25" cx="150.0" cy="502.3" r="3.6"><title>quarter, 1.5x: median 1.17x, P(drawdown over 50%) 4.2%</title></circle>
+<circle class="lev-pt e25 over" cx="242.0" cy="203.2" r="3.6"><title>quarter, 2x: median 1.21x, P(drawdown over 50%) 15.5%</title></circle>
+<circle class="lev-pt e25 over" cx="242.0" cy="481.8" r="3.6"><title>quarter, 2x: median 1.21x, P(drawdown over 50%) 15.5%</title></circle>
+<circle class="lev-pt e25 over" cx="334.0" cy="201.2" r="3.6"><title>quarter, 2.5x: median 1.24x, P(drawdown over 50%) 31.4%</title></circle>
+<circle class="lev-pt e25 over" cx="334.0" cy="452.9" r="3.6"><title>quarter, 2.5x: median 1.24x, P(drawdown over 50%) 31.4%</title></circle>
+<circle class="lev-pt e25 over" cx="426.0" cy="200.0" r="3.6"><title>quarter, 3x: median 1.25x, P(drawdown over 50%) 47.8%</title></circle>
+<circle class="lev-pt e25 over" cx="426.0" cy="423.0" r="3.6"><title>quarter, 3x: median 1.25x, P(drawdown over 50%) 47.8%</title></circle>
+<circle class="lev-pt e25 over" cx="518.0" cy="199.6" r="3.6"><title>quarter, 3.5x: median 1.26x, P(drawdown over 50%) 62.4%</title></circle>
+<circle class="lev-pt e25 over" cx="518.0" cy="396.4" r="3.6"><title>quarter, 3.5x: median 1.26x, P(drawdown over 50%) 62.4%</title></circle>
+<circle class="lev-pt e25 over" cx="610.0" cy="199.7" r="3.6"><title>quarter, 4x: median 1.26x, P(drawdown over 50%) 73.5%</title></circle>
+<circle class="lev-pt e25 over" cx="610.0" cy="376.2" r="3.6"><title>quarter, 4x: median 1.26x, P(drawdown over 50%) 73.5%</title></circle>
+<text class="lev-lab e25" x="618" y="203.7">quarter</text>
+<polyline class="lev e0" points="58.0,221.9 150.0,224.5 242.0,227.8 334.0,232.0 426.0,237.0 518.0,242.7 610.0,249.1"/><polyline class="lev e0" points="58.0,508.2 150.0,487.5 242.0,451.4 334.0,415.1 426.0,385.7 518.0,364.7 610.0,349.9"/>
+<circle class="lev-pt e0" cx="58.0" cy="221.9" r="3.6"><title>none, 1x: median 0.97x, P(drawdown over 50%) 1.0%</title></circle>
+<circle class="lev-pt e0" cx="58.0" cy="508.2" r="3.6"><title>none, 1x: median 0.97x, P(drawdown over 50%) 1.0%</title></circle>
+<circle class="lev-pt e0 over" cx="150.0" cy="224.5" r="3.6"><title>none, 1.5x: median 0.94x, P(drawdown over 50%) 12.3%</title></circle>
+<circle class="lev-pt e0 over" cx="150.0" cy="487.5" r="3.6"><title>none, 1.5x: median 0.94x, P(drawdown over 50%) 12.3%</title></circle>
+<circle class="lev-pt e0 over" cx="242.0" cy="227.8" r="3.6"><title>none, 2x: median 0.90x, P(drawdown over 50%) 32.2%</title></circle>
+<circle class="lev-pt e0 over" cx="242.0" cy="451.4" r="3.6"><title>none, 2x: median 0.90x, P(drawdown over 50%) 32.2%</title></circle>
+<circle class="lev-pt e0 over" cx="334.0" cy="232.0" r="3.6"><title>none, 2.5x: median 0.86x, P(drawdown over 50%) 52.1%</title></circle>
+<circle class="lev-pt e0 over" cx="334.0" cy="415.1" r="3.6"><title>none, 2.5x: median 0.86x, P(drawdown over 50%) 52.1%</title></circle>
+<circle class="lev-pt e0 over" cx="426.0" cy="237.0" r="3.6"><title>none, 3x: median 0.81x, P(drawdown over 50%) 68.3%</title></circle>
+<circle class="lev-pt e0 over" cx="426.0" cy="385.7" r="3.6"><title>none, 3x: median 0.81x, P(drawdown over 50%) 68.3%</title></circle>
+<circle class="lev-pt e0 over" cx="518.0" cy="242.7" r="3.6"><title>none, 3.5x: median 0.75x, P(drawdown over 50%) 79.8%</title></circle>
+<circle class="lev-pt e0 over" cx="518.0" cy="364.7" r="3.6"><title>none, 3.5x: median 0.75x, P(drawdown over 50%) 79.8%</title></circle>
+<circle class="lev-pt e0 over" cx="610.0" cy="249.1" r="3.6"><title>none, 4x: median 0.70x, P(drawdown over 50%) 88.0%</title></circle>
+<circle class="lev-pt e0 over" cx="610.0" cy="349.9" r="3.6"><title>none, 4x: median 0.70x, P(drawdown over 50%) 88.0%</title></circle>
+<text class="lev-lab e0" x="618" y="253.1">none</text>
+</svg>
+<!--/fig5-->
+<figcaption><b>Figure 5.</b> Median wealth after three years (above) and the chance of a drawdown
+deeper than 50 percent (below), by gross leverage, for four assumptions about how much of v2's
+backtest edge is real. A hollow point has more than a ten percent chance of halving under its
+curve's assumption. At half the edge, two times gives a
+median of 1.62 times the starting capital with a 6.1 percent chance of halving, and three times
+gives 1.94 with 28 percent, so three is out. The curves bend because volatility drag grows with
+the square of leverage while return grows linearly, the trade-off that Kelly sizing makes
+explicit.<sup>17</sup> At a quarter of the edge two times is already outside the budget, which is
+why live trading starts at one times.</figcaption>
+</figure>
+
+<h3>The venue is not the constraint</h3>
+
+<p>The venue's retail margin schedule across its 204 perpetual contracts asks for an initial
+margin between 1 and 20 percent of notional, mostly 5 or 10, with maintenance at half of that. At
+two times gross the whole account would have to lose somewhere between 80 and 99 percent of its
+capital before positions were liquidated. Every risk limit in the book acts long before that.</p>
+
+<p>Four stress episodes were replayed hour by hour on the venue's own candles, with v2's actual
+open positions at two times. A pessimistic bound marks every long at its hourly low and every
+short at its hourly high at the same moment, which cannot happen but cannot be exceeded either.</p>
+
+<div class="tscroll">
+<table class="data">
+<caption>v2's open book through four episodes at two times gross, priced on the venue's hourly
+candles. Priced is the share of the open book the venue's own history covers, since the rest had
+no contract yet. The drawdown and the end figure mark positions at hourly closes. The last column
+is the lowest point relative to the start with every position at its worst hourly extreme at the
+same moment.</caption>
+<thead><tr><th>Episode</th><th class="n">Priced</th><th class="n">Worst drawdown</th>
+<th class="n">End of episode</th><th class="n">Every wick at once</th></tr></thead>
+<tbody>
+<tr><td>Liquidation cascade, October 2025</td><td class="n">99%</td><td class="n">&minus;3.8%</td><td class="n">+4.1%</td><td class="n">&minus;24.4%</td></tr>
+<tr><td>Alt rally, November and December 2023</td><td class="n">86%</td><td class="n">&minus;1.7%</td><td class="n">+2.4%</td><td class="n">&minus;1.3%</td></tr>
+<tr><td>Alt top, March 2024</td><td class="n">92%</td><td class="n">&minus;2.5%</td><td class="n">+0.6%</td><td class="n">&minus;6.8%</td></tr>
+<tr><td>Carry unwind, August 2024</td><td class="n">97%</td><td class="n">&minus;1.9%</td><td class="n">+4.0%</td><td class="n">&minus;2.1%</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Risk limits that remember</h3>
+
+<p>One finding here was operational rather than statistical. The book runs as a short process
+each day, and every process started with fresh risk state. The sleeve limits and the kill switch
+therefore only ever saw the losses of a single run, which is to say they could never trip. The
+state is now rebuilt from the trade log when a process starts.</p>
+
+<p>That fix made the limits real, and the limits written for one times gross turned out to be
+wrong for two. A single sleeve swings far more than the book, with weekly volatility between 2.4
+and 3.2 percent against 1.6 for the four together, because the sleeves partly offset each other.
+A limit on each sleeve throws that diversification away.</p>
+
+<div class="tscroll">
+<table class="data">
+<caption>How often each limit trips within three years on v2's bootstrapped paths. With the full
+edge every trip is a false alarm, since the book is working. Sleeve figures span the four
+sleeves.</caption>
+<thead><tr><th>Limit</th><th>Leverage</th><th class="n">Full edge</th><th class="n">Half the edge</th></tr></thead>
+<tbody>
+<tr><td>Retire a sleeve at &minus;30%</td><td>1&#215;</td><td class="n">21 to 41%</td><td class="n">42 to 60%</td></tr>
+<tr><td>Retire a sleeve at &minus;30%</td><td>2&#215;</td><td class="n">81 to 95%</td><td class="n">92 to 98%</td></tr>
+<tr><td>Kill switch at &minus;35%</td><td>2&#215;</td><td class="n">8.2%</td><td class="n">31.9%</td></tr>
+<tr class="hl"><td>Kill switch at &minus;50%</td><td>2&#215;</td><td class="n">0.8%</td><td class="n">6.1%</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>A limit that fires on a working book nine times in ten is a scheduled shutdown. Drawdown
+control belongs at the level of total capital, where the theory of optimal drawdown-constrained
+investment puts it,<sup>18</sup> and where the diversification between sleeves has already been
+counted.</p>
+
+<div class="decision">
+<span class="h">What was set</span>
+<p>v2 runs at two times gross. Sleeve retirement is effectively switched off in both books. v2's
+kill switch sits at &minus;50 percent of capital, and the original book keeps &minus;35. The
+daily loss limit of ten percent per sleeve is unchanged.</p>
+<p>The plan for real money starts at one times for a few weeks to check fills against the
+backtest, then moves to two. Going beyond two would need live evidence that more than half the
+edge is real.</p>
+</div>
+</section>
+
+<section class="part">
+<div class="num"><b>5</b><span>Deployment</span></div>
+<h2>What runs now, and what this does not show</h2>
+
+<p class="lede">v2 trades in paper beside the original book, with the same capital, its own
+state and kill switch, and its own weekly report. Whichever holds up better on live data goes to
+real money, and the target is to do that before the end of 2026.</p>
+
+<p>Four mechanical changes went to both books with it. The risk state survives restarts, as
+above. The protective stop resting at the venue now triggers on the mark price rather than the
+last trade, which a single wick can reach, and at the same distance the backtest models. Before,
+a short was stopped at a fifty percent rise where the model holds it to sixty five. The live
+process now loads only the price history a decision uses, and its decisions match those from the
+full history to within rounding. And a weekly job adds the venue's new listings to v2's universe
+with enough history to rank them. Without it the young-coin effect could not reach the live book
+at all, since a coin that never enters the universe can never be sixty days old in it.</p>
+
+<h3>Limits of the evidence</h3>
+
+<p>The central result is not significant at the level the programme set for itself, and the
+deflated Sharpe ratio rests on an assumed spread of Sharpe ratios across trials, since that spread
+was not recorded for report one's configurations. The probability of backtest overfitting was not
+computed.<sup>19</sup> Published anomalies tend to weaken after discovery,<sup>20</sup> and an
+effect found in one sample of four and a half years can do the same.</p>
+
+<p>v2's advantage over the baseline is concentrated in 2023 and 2025, years with large waves of
+new listings. v2's own two year walk forward, which the weekly report uses to set expectations,
+shows far higher returns than the full sample, and should be read as an upper bound. The carry
+sleeve earns about a fifth less funding on the venue than the backtest assumes. Coins the venue
+listed without a spot market on the signal exchange are absent from every universe here, a
+selection this report cannot measure. And the attribution in Figure 4 is approximate, since it
+rests on a sixty-day beta.</p>
+</section>
+
+<section class="part">
+<div class="num"><b>6</b><span>Future work</span></div>
+<h2>Teaching the model about supply</h2>
+
+<p class="lede">Part three suggests the young-coin profit lives on the short side of new listings.
+The model sees only prices, volumes, funding and positioning, so it can only infer that from
+price behaviour. The obvious next experiment gives it the cause directly.</p>
+
+<p>Two kinds of data would do it. The first is a history of each coin's circulating supply against
+its total supply, which says how much of a coin is still locked away. The second is the schedule
+of unlocks, the dates on which locked tokens are released to founders, investors and treasuries.
+Both are sold by specialist data providers, and one month of access to each is enough to download
+the history.</p>
+
+<p>The hypotheses would be registered before the data arrives, in the same form as the twenty
+arms. A large scheduled unlock in the next thirty days predicts underperformance over the
+following weeks, in the way lock-up expiries do for equities.<sup>14</sup> A low circulating share
+predicts negative cross-sectional returns, through the steady supply overhang that token models
+describe.<sup>15</sup> Both would enter as ranked features and as a filter on the long side, and
+both would count as new trials against the deflated Sharpe ratio.</p>
+
+<p>One risk has to be checked first, and report two shows why. Supply and unlock histories are
+probably best for coins that still exist. If the data covers delisted coins poorly, a supply
+feature would end up trading survivors while the price features trade everything, which
+reintroduces survivorship through a side door. Coverage of the 107 delisted coins is therefore the
+first thing to measure, and the experiment runs only if it is close to complete.</p>
+
+<p>Three smaller items are already in motion. The hourly bid and ask archive will allow the
+execution hour to be chosen on cost. A year of the venue's own funding will make it usable as the
+carry signal. And the live weeks of both books will update the estimate of how much of the edge is
+real, which is the number every leverage decision above depends on.</p>
+</section>
+
+<section class="part">
+<div class="num"><b>M</b><span>Methods</span></div>
+<h2>How the numbers were produced</h2>
+
+<h3>Data</h3>
+<p>Hourly spot bars from the signal exchange, from 2020 for most coins, for 299 coins that the
+trading venue has listed as linear perpetuals at some point. Funding and positioning come from the
+signal exchange's futures archive. The venue's daily and hourly candles, funding prints and
+instrument snapshots give the listing calendar, the margin schedule, the stress replays and the
+funding comparison. A second venue's public funding and open interest history serves the
+cross-venue arm only.</p>
+
+<h3>Protocol</h3>
+<p>Nine walk-forward windows of 180 days, with models refitted at the start of each window on
+everything before it, give 233 weekly returns from March 2022 to September 2026. Four sleeves at
+equal capital, a weekly gradient boosted ranker, a two-week blend, two-week momentum and weekly
+carry, each hold the top and bottom fifth of the thirty most liquid eligible coins, split into
+daily tranches. Entries post at the touch and cross what has not filled. A stop closes a leg
+after a log move of 0.5 against it, checked against hourly extremes.</p>
+
+<p>Each arm was evaluated through a table holding one row per leg, from which construction, cost
+and overlay arms only reweight. That table reproduces the library backtest exactly, to a largest
+weekly difference of 5&#215;10<sup>&minus;17</sup>, and v2's library backtest matches it in the
+same way, so the paper book trades what was tested.</p>
+
+<h3>Statistics</h3>
+<p>Differences between arms are tested after rescaling the arm to the baseline's volatility,
+with a Newey and West variance and a Bartlett kernel.<sup>2</sup> The deflated Sharpe ratio uses 61
+trials and an assumed cross-trial dispersion of 0.5 in annual Sharpe ratio.<sup>4</sup> Annual
+Sharpe ratios are read with the usual caution about their sampling error, which for four and a
+half years of weekly data is between 0.6 and 0.75 at the levels reported here.<sup>21</sup> Bootstrap paths are circular blocks
+of eight weeks, 5,000 per setting, with the edge scaled by subtracting a fraction of the mean
+return from every week before resampling.</p>
+
+<h3>Reproducibility</h3>
+<p>Every figure is generated by a script from the stored weekly series and leg tables, and the
+derived numbers in the text come from one file computed from the same store, so no figure can
+drift from the result it shows. The registered arms, their parameters and the pass rule were
+committed before the first run.</p>
+</section>
+
+<section class="part">
+<div class="num"><b>R</b><span>Register</span></div>
+<h2>Every arm, and what it showed</h2>
+
+<ol class="reg">
+<li><div class="k">E0</div><div><div class="t">Netted costs, a measurement</div>
+  <div class="d">6.7 basis points a week per leg against 2.4 on net trades. Sharpe 1.24 becomes 1.48 on the B0 universe.</div></div></li>
+<li><div class="k">E1</div><div><div class="t">The venue's funding, a measurement</div>
+  <div class="d">Correlation 0.96 and 0.97 with the backtest's funding over eleven months. The carry sleeve receives about a fifth less.</div></div></li>
+<li><div class="k">U0</div><div><div class="t">Every coin the venue ever listed, a measurement</div>
+  <div class="d">273 coins in the archive rather than 166. Sharpe 1.24 falls to 1.05, and 1.29 with netted costs.</div></div></li>
+<li><div class="k">E2</div><div><div class="t">Maker exits</div>
+  <div class="d">&minus;0.4 bp a week, t &minus;1.87, both halves negative. Adverse selection outweighs the fee saved.</div></div></li>
+<li><div class="k">K1</div><div><div class="t">Inverse-volatility legs</div>
+  <div class="d">&minus;1.4 bp a week, t &minus;0.40.</div></div></li>
+<li><div class="k">K2</div><div><div class="t">Beta-neutral sides</div>
+  <div class="d">+6.3 bp a week, t 0.71, both halves positive on the old universe. Adds nothing on top of U3.</div></div></li>
+<li><div class="k">K3</div><div><div class="t">Inverse-volatility sleeves</div>
+  <div class="d">&minus;1.5 bp a week, t &minus;0.61.</div></div></li>
+<li><div class="k">K4</div><div><div class="t">One composite score</div>
+  <div class="d">+4.2 bp a week, t 0.88, drawdown 23.5 percent. Carries 1.4 times leverage within budget against 2.5.</div></div></li>
+<li><div class="k">K5</div><div><div class="t">Majors hedge the shorts</div>
+  <div class="d">+5.7 bp a week, t 0.64, second half negative once the hedge pays funding.</div></div></li>
+<li><div class="k">K6</div><div><div class="t">Rank-weighted legs</div>
+  <div class="d">+0.9 bp a week, t 0.23.</div></div></li>
+<li><div class="k">Q1</div><div><div class="t">Squeeze overlay</div>
+  <div class="d">Active on one day in 2,069. &minus;0.1 bp a week.</div></div></li>
+<li><div class="k">T1</div><div><div class="t">Train on every coin</div>
+  <div class="d">&minus;0.8 bp a week, t &minus;0.22, halves of opposite sign.</div></div></li>
+<li><div class="k">T3</div><div><div class="t">Liquidity-weighted training</div>
+  <div class="d">+0.8 bp a week, t 0.31, halves of opposite sign.</div></div></li>
+<li><div class="k">T4</div><div><div class="t">Monthly refits</div>
+  <div class="d">&minus;4.7 bp a week, t &minus;1.52, both halves negative.</div></div></li>
+<li><div class="k">U4</div><div><div class="t">Top 40 by volume</div>
+  <div class="d">&minus;3.7 bp a week, t &minus;0.98.</div></div></li>
+<li><div class="k">U5</div><div><div class="t">Top 50 by volume</div>
+  <div class="d">&minus;0.9 bp a week, t &minus;0.15.</div></div></li>
+<li><div class="k">C2</div><div><div class="t">Cross-venue crowding</div>
+  <div class="d">+0.3 bp a week, t 0.14, first half negative. Coverage 84 to 89 percent of rows.</div></div></li>
+<li><div class="k">S1</div><div><div class="t">Drop the momentum sleeve</div>
+  <div class="d">&minus;1.8 bp a week, t &minus;0.45, drawdown 17.2 percent against 10.5.</div></div></li>
+<li><div class="k">H1</div><div><div class="t">Trend on the majors</div>
+  <div class="d">+0.3 bp a week, t 0.15. Alone, Sharpe 0.29 and correlation 0.06 with the book.</div></div></li>
+<li><div class="k">U1</div><div><div class="t">180 days of history</div>
+  <div class="d">Sharpe 1.45 on the honest universe, against 1.05 at a year.</div></div></li>
+<li><div class="k">U2</div><div><div class="t">90 days of history</div>
+  <div class="d">Sharpe 1.51.</div></div></li>
+<li class="pass"><div class="k">U3</div><div><div class="t">60 days of history</div>
+  <div class="d">Sharpe 1.56, both halves positive against B0, t 0.71. Adopted.</div></div></li>
+<li class="pass"><div class="k">v2</div><div><div class="t">U3 with the current listings, netted costs</div>
+  <div class="d">Sharpe 1.74 against 1.29, +7.9 bp a week, t 1.12, halves +11.2 and +4.6. Deflated Sharpe 0.89 over 61 trials. Runs in paper at two times.</div></div></li>
+</ol>
+</section>
+
+<section class="part">
+<div class="num"><b>&#167;</b><span>References</span></div>
+<ol class="refs">
+<li>Brown, S. J., Goetzmann, W., Ibbotson, R. G., and Ross, S. A. (1992). Survivorship bias in
+  performance studies. <i>Review of Financial Studies</i>, 5(4), 553&ndash;580.</li>
+<li>Newey, W. K., and West, K. D. (1987). A simple, positive semi-definite, heteroskedasticity and
+  autocorrelation consistent covariance matrix. <i>Econometrica</i>, 55(3), 703&ndash;708.</li>
+<li>Harvey, C. R., Liu, Y., and Zhu, H. (2016). And the cross section of expected returns.
+  <i>Review of Financial Studies</i>, 29(1), 5&ndash;68.</li>
+<li>Bailey, D. H., and López de Prado, M. (2014). The deflated Sharpe ratio. Correcting for
+  selection bias, backtest overfitting and non normality. <i>Journal of Portfolio Management</i>,
+  40(5), 94&ndash;107.</li>
+<li>Frazzini, A., and Pedersen, L. H. (2014). Betting against beta. <i>Journal of Financial
+  Economics</i>, 111(1), 1&ndash;25.</li>
+<li>Moreira, A., and Muir, T. (2017). Volatility managed portfolios. <i>Journal of Finance</i>,
+  72(4), 1611&ndash;1644.</li>
+<li>Glosten, L. R., and Milgrom, P. R. (1985). Bid, ask and transaction prices in a specialist
+  market with heterogeneously informed traders. <i>Journal of Financial Economics</i>, 14(1),
+  71&ndash;100.</li>
+<li>Daniel, K., and Moskowitz, T. J. (2016). Momentum crashes. <i>Journal of Financial
+  Economics</i>, 122(2), 221&ndash;247.</li>
+<li>He, S., Manela, A., Ross, O., and von Wachter, V. (2022). Fundamentals of perpetual futures.
+  <i>arXiv</i> 2212.06888.</li>
+<li>Moskowitz, T. J., Ooi, Y. H., and Pedersen, L. H. (2012). Time series momentum. <i>Journal of
+  Financial Economics</i>, 104(2), 228&ndash;250.</li>
+<li>Liu, Y., Tsyvinski, A., and Wu, X. (2022). Common risk factors in cryptocurrency.
+  <i>Journal of Finance</i>, 77(2), 1133&ndash;1177.</li>
+<li>Ritter, J. R. (1991). The long run performance of initial public offerings. <i>Journal of
+  Finance</i>, 46(1), 3&ndash;27.</li>
+<li>Loughran, T., and Ritter, J. R. (1995). The new issues puzzle. <i>Journal of Finance</i>,
+  50(1), 23&ndash;51.</li>
+<li>Field, L. C., and Hanka, G. (2001). The expiration of IPO share lockups. <i>Journal of
+  Finance</i>, 56(2), 471&ndash;500.</li>
+<li>Cong, L. W., Li, Y., and Wang, N. (2021). Tokenomics. Dynamic adoption and valuation.
+  <i>Review of Financial Studies</i>, 34(3), 1105&ndash;1155.</li>
+<li>Künsch, H. R. (1989). The jackknife and the bootstrap for general stationary observations.
+  <i>Annals of Statistics</i>, 17(3), 1217&ndash;1241.</li>
+<li>Kelly, J. L. (1956). A new interpretation of information rate. <i>Bell System Technical
+  Journal</i>, 35(4), 917&ndash;926.</li>
+<li>Grossman, S. J., and Zhou, Z. (1993). Optimal investment strategies for controlling
+  drawdowns. <i>Mathematical Finance</i>, 3(3), 241&ndash;276.</li>
+<li>Bailey, D. H., Borwein, J. M., López de Prado, M., and Zhu, Q. J. (2017). The probability of
+  backtest overfitting. <i>Journal of Computational Finance</i>, 20(4), 39&ndash;69.</li>
+<li>McLean, R. D., and Pontiff, J. (2016). Does academic research destroy stock return
+  predictability? <i>Journal of Finance</i>, 71(1), 5&ndash;32.</li>
+<li>Lo, A. W. (2002). The statistics of Sharpe ratios. <i>Financial Analysts Journal</i>, 58(4),
+  36&ndash;52.</li>
+</ol>
+</section>
+
+</div>
+
+<div class="bar">
+  <span>HydraTrade profit research report, October 2026</span>
+  <button id="t" type="button" aria-label="Switch between light and dark">Change theme</button>
+</div>
+
+<script>
+(function(){
+  var b=document.getElementById('t'), r=document.documentElement;
+  function cur(){ return r.getAttribute('data-theme') ||
+    (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+  try{ var s=localStorage.getItem('h3theme'); if(s) r.setAttribute('data-theme',s); }catch(e){}
+  b.addEventListener('click', function(){
+    var n = cur()==='dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', n);
+    try{ localStorage.setItem('h3theme', n); }catch(e){}
+  });
+})();
+</script>
+<script>
+/* citation pop-ups: each numeric superscript shows those entries of the reference list */
+(function(){
+  var refs=document.querySelectorAll('ol.refs li');
+  document.querySelectorAll('sup').forEach(function(s){
+    if(/^\d+(,\d+)*$/.test(s.textContent)){
+      s.className='cite'; s.tabIndex=0; s.dataset.refs=s.textContent;
+    }
+  });
+  var tip=document.createElement('div'), open=null;
+  tip.className='cite-tip'; tip.id='cite-tip'; tip.setAttribute('role','tooltip'); tip.hidden=true;
+  document.body.appendChild(tip);
+  function show(el){
+    tip.innerHTML=el.dataset.refs.split(',').map(function(k){
+      var li=refs[+k-1];
+      return li ? '<p>'+(+k)+'. '+li.innerHTML+'</p>' : '';
+    }).join('');
+    tip.hidden=false;
+    if(open) open.removeAttribute('aria-describedby');
+    open=el; el.setAttribute('aria-describedby','cite-tip');
+    var r=el.getBoundingClientRect(), w=tip.offsetWidth, h=tip.offsetHeight;
+    tip.style.left=Math.max(16, Math.min(r.left+r.width/2-w/2, innerWidth-w-16))+'px';
+    tip.style.top=(r.top-h-8>8 ? r.top-h-8 : r.bottom+8)+'px';
+  }
+  function hide(){
+    if(open) open.removeAttribute('aria-describedby');
+    open=null; tip.hidden=true;
+  }
+  function cite(e){ return e.target.closest && e.target.closest('.cite'); }
+  document.addEventListener('mouseover', function(e){ var c=cite(e); if(c) show(c); });
+  document.addEventListener('mouseout', function(e){ if(cite(e)) hide(); });
+  document.addEventListener('focusin', function(e){ var c=cite(e); if(c) show(c); });
+  document.addEventListener('focusout', hide);
+  document.addEventListener('click', function(e){ var c=cite(e); if(!c) hide(); else if(c!==open) show(c); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') hide(); });
+  addEventListener('scroll', hide, {passive:true});
+})();
+</script>
+<section class="ht-series" id="series" aria-label="More in this series"><h2>The HydraTrade series</h2><div class="ht-nav"><a class="ht-card ht-prev" href="../ii/"><span class="ht-dir">&larr; Previous report</span><span class="ht-t">HydraTrade II: The Universe Was the Result</span></a><a class="ht-card ht-next" href="../iv/"><span class="ht-dir">Next report &rarr;</span><span class="ht-t">HydraTrade IV: Most of the Picture Was Already There</span></a></div><a class="ht-all" href="../#reports">All reports</a><p class="ht-note">Research publications of Ciya Labs. Not investment advice; backtested and simulated results do not predict future returns. <a href="https://ciyalabs.com/imprint.html" style="color:inherit">Imprint</a> &middot; <a href="https://ciyalabs.com/privacy.html" style="color:inherit">Privacy</a></p></section>
+</body>
+</html>
