@@ -238,6 +238,8 @@ ol.refs i{color:var(--ink)}
   max-width:1100px;margin:0 auto;padding:12px 20px;font:500 12px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;
   letter-spacing:.08em;text-transform:uppercase}
 .ht-bar a{color:inherit;text-decoration:none;opacity:.72}
+.ht-bar a:first-child{display:inline-flex;align-items:center;gap:7px}
+.ht-mark{width:14px;height:14px;flex:none}
 .ht-bar a:hover{opacity:1}
 .ht-bar b{font-weight:600;opacity:1}
 .ht-series{font-style:normal;max-width:760px;margin:72px auto 120px;padding:0 20px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -256,7 +258,7 @@ ol.refs i{color:var(--ink)}
 </style>
 </head>
 <body>
-<nav class="ht-bar" aria-label="HydraTrade series"><a href="../"><b>HydraTrade</b> &middot; Ciya Labs</a><a href="../#reports">All reports</a></nav>
+<nav class="ht-bar" aria-label="HydraTrade series"><a href="../"><svg class="ht-mark" viewBox="0 0 64 64" aria-hidden="true"><path fill="currentColor" d="M8 58V40l10-6v24zM27 58V28l10-6v36zM46 58V14l10-6v50z"/></svg><b>HydraTrade</b> &middot; Ciya Labs</a><a href="../#reports">All reports</a></nav>
 <div class="wrap">
 
 <header class="mast">
